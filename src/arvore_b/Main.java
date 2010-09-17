@@ -7,6 +7,8 @@ package arvore_b;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.lang.String;
+import java.lang.Throwable;
 
 /**
  *
@@ -18,7 +20,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+        
         int iOpcao = 1;
         int iNumMaxFilhos = 0;
         
@@ -67,10 +69,12 @@ public class Main {
                     int iRemover;
                     System.out.println("Remover >> ");
                     iRemover = scanner.nextInt();
-                    if ( arvore.remove(iRemover))
-                        System.out.println("Chave removida com sucesso!");
-                    else
-                        System.out.println("Árvore vazia!");
+                    try{
+                        arvore.remove(iRemover);
+                    }
+                    catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
 
                 case 3:

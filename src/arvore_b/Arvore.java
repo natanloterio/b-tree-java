@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.lang.Math;
 import java.util.Vector;
+import java.lang.Throwable;
+import java.lang.Exception;
 
 /**
  *
@@ -39,9 +41,8 @@ public class Arvore {
             if (iNumChaves < (iNumMaxFilhos - 1)) {
                 raiz.addChave(aChave);
                 ordenarNo(raiz);
-            }
-            // dividindo a raiz quando estiver cheia
-            else{
+            } // dividindo a raiz quando estiver cheia
+            else {
                 dividirNo(raiz, aChave);
             }
         }
@@ -49,17 +50,74 @@ public class Arvore {
         return true;
     }
 
-     boolean remove(int aChave) {
+    boolean remove(int aChave) throws Exception {
         if (vazia()) {
-            return false;
+            throw new Exception("A Lista encontra-se vazia");
         }
+
+        No node = new No();
+
+        node = this.buscarNo(aChave);
+        if (node == null) {
+            throw new Exception("Elemento não encontrado");
+        }
+
+        if (node.folha() == true && node.getListChaves().size() > 1) {
+            node.getListChaves().remove(aChave);
+            return true;
+        }
+
+        if (node.folha() == true && node.getListChaves().size() == 1){
+            ///...........
+        }
+
 
         return true;
     }
 
-     // # SEM TERMINAR, ALGUÉM POR FAVOR TERMINE ESTE MÉTODO
+    // # SEM TERMINAR, ALGUÉM POR FAVOR TERMINE ESTE MÉTODO
     // deve buscar pelo nó na árvore e retornar TRUE ou FALSE
-    public void buscarNo(int aChave) {
+    
+    //Sherman: true ou false ? não faz mais sentido retornar o nó ???
+    public No buscarNo(int aChave) {
+        int count;
+        for (count = 0; count < this.getRaiz().getListChaves().size(); count++) {
+
+            if (aChave == this.getRaiz().getListChaves().get(count)) {
+                return this.getRaiz();
+            }
+
+
+            if (aChave < this.getRaiz().getListChaves().get(count)) {
+                return this.buscarNo(aChave, this.getRaiz().getFilho(count));
+            }
+
+
+        }
+
+        //O numero buscado eh maior que todos da lista da raiz, entao busca no
+        //ultimo filho mais a direita
+        return this.buscarNo(aChave, this.getRaiz().getFilho(count + 1));
+    }
+
+    public No buscarNo(int aChave, No aux) {
+        int count;
+
+        if (aux == null) {
+            return null;
+        }
+
+        for (count = 0; count < aux.getListChaves().size(); count++) {
+            if (aChave == aux.getListChaves().get(count)) {
+                return aux;
+            }
+
+            if (aChave < aux.getListChaves().get(count)) {
+                return this.buscarNo(aChave, aux.getFilho(count));
+            }
+        }
+
+        return this.buscarNo(aChave, aux.getFilho(count + 1));
     }
 
     // busca por uma chave na árvore
@@ -68,27 +126,26 @@ public class Arvore {
         int iNumChaves = aNo.getListChaves().size();
 
 
-        if (aNo.getListChaves().contains(aChave))
-            return true;
-        
-        else {
-
-        while (i < iNumChaves && aChave > aNo.getListChaves().get(i)) {
-            i++;
-        }
-
-
-        // se não fora encontrado a chave 
-        if (i >= iNumChaves) {
-            return false;
-        }
-
-        /*
-        if (aChave == aNo.getListChaves().get(i)) {
+        if (aNo.getListChaves().contains(aChave)) {
             return true;
         } else {
-            */
-        buscaChave(aNo.getListFilhos().get(i), aChave);
+
+            while (i < iNumChaves && aChave > aNo.getListChaves().get(i)) {
+                i++;
+            }
+
+
+            // se não fora encontrado a chave
+            if (i >= iNumChaves) {
+                return false;
+            }
+
+            /*
+            if (aChave == aNo.getListChaves().get(i)) {
+            return true;
+            } else {
+             */
+            buscaChave(aNo.getListFilhos().get(i), aChave);
         }
         return false;
     }
@@ -188,13 +245,13 @@ public class Arvore {
         // sabendo quem é o indice do meio, qual chave irá subir na divisão do nó
         int iMeio = calcularMeio(iNumChaves);
 
-        
+
         aNo.getListFilhos().add(noEsq);
         aNo.getListFilhos().add(noDir);
-        
+
 
         // é (i+1) pois ultrapassaria o indice o qual deverá ser pego para o próximo nó
-        while ( aNo.getListChaves().get(0) < aNo.getListChaves().get(iMeio)) {
+        while (aNo.getListChaves().get(0) < aNo.getListChaves().get(iMeio)) {
             // primeiro tenho que adicionar os valores ao novo nó primeiro para depois adicionar este nó a lista de filhos da raiz
             noEsq.addChave(raiz.getListChaves().get(0));
 
@@ -228,7 +285,7 @@ public class Arvore {
     }
 
     // sabendo qual posição que esta o nó que irá subir
-    public int calcularMeio(int aNumChaves){
+    public int calcularMeio(int aNumChaves) {
 
         int iMeio;
 
@@ -243,8 +300,7 @@ public class Arvore {
         return iMeio;
     }
 
-    public No getRaiz(){
+    public No getRaiz() {
         return raiz;
     }
-
 }
