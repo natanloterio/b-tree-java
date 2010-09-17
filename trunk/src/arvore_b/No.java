@@ -14,7 +14,12 @@ public class No {
     private List<Integer> listChaves = new ArrayList<Integer>();
     private List<No> listFilhos = new ArrayList<No>();
 
+    //seta todos os filhos para NULL;
     public No() {
+        int i;
+        for (i = 0; i < this.listFilhos.size(); i++) {
+            this.listFilhos.set(i, null);
+        }
     }
 
     /**
@@ -45,12 +50,26 @@ public class No {
         return listFilhos;
     }
 
-    public void addChave(int aChave){
+    public void addChave(int aChave) {
         listChaves.add(aChave);
     }
 
-    public Iterator getIterator(){
+    public Iterator getIterator() {
         return listChaves.iterator();
     }
 
+    //retorna o filho desejado
+    public No getFilho(int index) {
+        return this.listFilhos.get(index);
+    }
+
+    //caso o filho mais a esquerda do NÓ for null
+    //ja prova que ele é folha!
+    public boolean folha() {
+        if (this.getFilho(0) == null) {
+            return false;
+        }
+        return true;
+
+    }
 }
