@@ -5,13 +5,7 @@
 package arvore_b;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +20,12 @@ public class Arquivo {
     public Arquivo() {
     }
 
+    /**
+     * Lendo arquivo que contem informações para carregar uma determinada árvore automaticamente
+     * @param sArqLer
+     * @return Retorna uma lista de inteiros sendo o primeiro termo da lista o número máximo de chaves e os demais as chaves a serem inseridas na árvore
+     * @author Valter Henrique
+     */
     public List<Integer> lerArquivo(String sArqLer) {
 
         //lendo sLinhas

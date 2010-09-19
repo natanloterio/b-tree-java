@@ -12,7 +12,7 @@ import java.lang.Throwable;
 
 /**
  *
- * @author Valter
+ * @author Valter Henrique, Arthur Mazer, Vitor Villela
  */
 public class Main {
 
@@ -20,12 +20,12 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         int iOpcao = 1;
-        int iNumMaxFilhos = 0;
-        
+        int iNumMaxFilhos = numMaxFilhos();
+
         Scanner scanner = new Scanner(System.in);
-        Arvore arvore = new Arvore();
+        Arvore arvore = new Arvore(iNumMaxFilhos);
 
         while (iOpcao != 0) {
             System.out.println(" -- Arvore Binária -- ");
@@ -37,9 +37,18 @@ public class Main {
             System.out.println(" 6 - Limpar árvore");
             System.out.println(" 7 - Busca chave");
             System.out.println(" 0 - Sair");
-            System.out.println(">>");
+            System.out.print(">> ");
 
             iOpcao = scanner.nextInt();
+
+            // se ao selecionar uma destas opções e a árvore estiver vazia
+            // exibir mensagem de erro que estará em case 8
+            if (iOpcao == 2 || iOpcao == 3 || iOpcao == 7) {
+                if (arvore.vazia()) {
+                    iOpcao = 8;
+                }
+            }
+
 
             System.out.println("-------------------------------");
 
@@ -49,54 +58,37 @@ public class Main {
                     break;
 
                 case 1:
-                    if (iNumMaxFilhos == 0)
-                        System.out.println("Primeiro informe o número máximo de filhos dos nós da árvore!");
-                    else{
-                        int iInserir;
-                        System.out.println("Inserir >> ");
-                        iInserir = scanner.nextInt();
+                    int iInserir;
+                    System.out.println("Inserir >> ");
+                    iInserir = scanner.nextInt();
 
-                        if (arvore.insere(iInserir))
-                            System.out.println("Chave inserida com sucesso!");
-                        else
-                            System.out.println("Não foi possível inserir a chave!");
+                    if (arvore.insere(iInserir)) {
+                        System.out.println("Chave inserida com sucesso!");
+                    } else {
+                        System.out.println("Não foi possível inserir a chave!\nChave JÁ EXISTENTE!!");
                     }
-                        
-
                     break;
 
                 case 2:
                     int iRemover;
                     System.out.println("Remover >> ");
                     iRemover = scanner.nextInt();
-                    try{
+                    try {
                         arvore.remove(iRemover);
-                    }
-                    catch(Exception e){
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     break;
 
                 case 3:
-                    if (arvore.vazia())
-                        System.out.println("Árvore vazia!");
-                    else
-                        arvore.exibir();
+                    arvore.exibir();
                     break;
 
                 case 4:
-                    // 3 é o mínimo de chaves em um nó pode ter em uma árvore B
-                    while (iNumMaxFilhos < 3){
-                        System.out.println("Numero máximo de filhos dos nós da árvore >> ");
-                        System.out.println(">> ");
-                        iNumMaxFilhos = scanner.nextInt();
-                    }
-
-                    // dizendo a arvore o numero máximo de filhos que um nó poderá ter
-                    arvore.setNumMaxFilhos(iNumMaxFilhos);
+                    arvore = new Arvore(numMaxFilhos());
                     break;
 
-                // oa valores que serão inseridos na árvore podem ser carregados atráves de um arquivo, chamando 'Dados'
+                // os valores que serão inseridos na árvore podem ser carregados atráves de um arquivo, chamando 'Dados'
                 case 5:
                     Arquivo arq = new Arquivo();
                     List<Integer> list = new ArrayList<Integer>();
@@ -107,48 +99,56 @@ public class Main {
                     list = arq.lerArquivo("C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt");
 
                     // o primeiro valor lido do arquivo será o número máximo de filhos que aquela árvore poderá ter
-                    iNumMaxFilhos = list.get(0);
-                    arvore.setNumMaxFilhos(iNumMaxFilhos);
-                    
+                    arvore = new Arvore(list.get(0));
+
                     int i = 1;
                     // inserindo os valores restantes na arvore
-                    while (i < list.size()){
+                    while (i < list.size()) {
                         arvore.insere(list.get(i));
                         i++;
                     }
                     break;
 
                 case 6:
-                    arvore = new Arvore();
-                    iNumMaxFilhos = 0;
-                    System.out.println("Árvore limpa !!");
-                break;
+                    arvore = new Arvore(numMaxFilhos());
+                    break;
 
                 case 7:
                     int iChave;
+                    System.out.print("Informe a chave >> ");
+                    iChave = scanner.nextInt();
 
-                    if (iNumMaxFilhos > 2) {
-                        System.out.print("Informe a chave >> ");
-                        iChave = scanner.nextInt();
+                    if (arvore.buscaChave(arvore.getRaiz(), iChave) != null) {
+                        System.out.println("Chave já existe na arvore !!!");
+                    } else {
+                        System.out.println("Não foi encontrada a chave informada");
+                    }
+                    break;
 
-                        if (arvore.buscaChave(arvore.getRaiz(), iChave)) {
-                            System.out.println("Chave já existe na arvore !!!");
-                        } else {
-                            System.out.println("Não foi encontrada a chave informada");
-                        }
-                    }else
-                        System.out.println("Primeiro informe o número máximo de filhos dos nós da árvore!");
-                    
+                case 8:
+                    System.out.println("Arvore vazia !\nOperação não possível !");
                     break;
 
                 default:
                     System.out.println("Esta não é uma opção válida!");
             }
 
-            System.out.print("\n-------------------------------\n");
+            System.out.println("\n-------------------------------");
 
         }
+    }
 
+    // retornando o número máximo de filhos que terá a árvore
+    static int numMaxFilhos() {
+        int iNumMaxFilhos = 0;
+        Scanner scanner = new Scanner(System.in);
 
+        // 3 é o mínimo de chaves em um nó pode ter em uma árvore B
+        while (iNumMaxFilhos < 3) {
+            System.out.println("Numero máximo de filhos dos nós da árvore >> ");
+            System.out.println(">> ");
+            iNumMaxFilhos = scanner.nextInt();
+        }
+        return iNumMaxFilhos;
     }
 }
