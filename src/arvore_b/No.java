@@ -53,6 +53,36 @@ public class No {
     }
 
     /**
+     * Inserindo a chave em uma posição da lista de forma que os valores posterioes a essa posição se desloquem para direita após essa inserção
+     * @param index O indice aonde quer inserir a chave
+     * @param aChave A chave a ser inserida
+     * @author Valter Henrique
+     */
+    public void addChaveNoIndice(int index, int aChave){
+        listChaves.add(index, aChave);
+    }
+
+    /**
+     * Inserindo um nó em uma posição da lista de filhos de forma que os nós posteriores a essa posição se desloquem para direita após a inserção
+     * @param index O índice de aonde deve ocorrer essa inserção
+     * @param aNo O nó a ser inserido
+     * @author Valter Henrique
+     */
+    public void addFilhosNoIndice(int index, No aNo){
+        listFilhos.add(index, aNo);
+    }
+
+    /**
+     * Retorna a chave no indíce informado
+     * @param index O indice que contem a chave
+     * @return O indice o qual contém a chave
+     * @author Valter Henrique
+     */
+    public int getChave(int index){
+        return listChaves.get(index);
+    }
+
+    /**
      *Adiciona filho ao nó que chamou o método
      * @param aNo
      * @author Valter Henrique
@@ -70,6 +100,15 @@ public class No {
     public void removeChave(int index){
         System.out.println("REMOVENDO CHAVE");
         System.out.println(listChaves.remove(index));
+    }
+
+    /**
+     * Removendo determinado filho, passando o seu índice apenas lembrando que a 'list' já reordena a numeros dos ínidices após a remoção
+     * @param index Indice de qual filho será removido
+     * @author Valter Henrique
+     */
+    public void removeFilho(int index){
+        listFilhos.remove(index);
     }
 
     /**
@@ -115,9 +154,9 @@ public class No {
      */
     public boolean folha() {
         if (this.listFilhos.isEmpty())
-            return false;
+            return true;
 
-        return true;
+        return false;
 
     }
 }

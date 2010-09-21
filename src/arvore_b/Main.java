@@ -22,7 +22,9 @@ public class Main {
     public static void main(String[] args) {
 
         int iOpcao = 1;
-        int iNumMaxFilhos = numMaxFilhos();
+
+        // int iNumMaxFilhos = numMaxFilhos();
+        int iNumMaxFilhos = 5;
 
         Scanner scanner = new Scanner(System.in);
         Arvore arvore = new Arvore(iNumMaxFilhos);
@@ -62,7 +64,7 @@ public class Main {
                     System.out.println("Inserir >> ");
                     iInserir = scanner.nextInt();
 
-                    if (arvore.insere(iInserir)) {
+                    if (arvore.insere(arvore.getRaiz(), iInserir)) {
                         System.out.println("Chave inserida com sucesso!");
                     } else {
                         System.out.println("Não foi possível inserir a chave!\nChave JÁ EXISTENTE!!");
@@ -81,7 +83,7 @@ public class Main {
                     break;
 
                 case 3:
-                    arvore.exibir();
+                    arvore.exibir(arvore.getRaiz());
                     break;
 
                 case 4:
@@ -104,7 +106,7 @@ public class Main {
                     int i = 1;
                     // inserindo os valores restantes na arvore
                     while (i < list.size()) {
-                        arvore.insere(list.get(i));
+                        arvore.insere(arvore.getRaiz(), list.get(i));
                         i++;
                     }
                     break;

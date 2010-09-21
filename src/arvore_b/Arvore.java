@@ -14,9 +14,10 @@ import java.lang.Exception;
  */
 public class Arvore {
 
-    private No raiz = new No();
+    private No raiz;
     private final int iNumMaxFilhos;
     private final int iNumMinChaves;
+    private final int iNumMaxChaves;
 
     /**
      * Toda árvore precisa saber o número máximo de filhos que terá antes de começar a inserir elementos na mesma
@@ -27,6 +28,8 @@ public class Arvore {
         iNumMaxFilhos = aNumMaxFilhos;
         // Calculando o mínimo de chaves que um nó nesta árvore poderá ter
         iNumMinChaves = (int) Math.floor(((double) (iNumMaxFilhos - 1)) / ((double) 2));
+        iNumMaxChaves = iNumMaxFilhos - 1;
+        raiz = new No();;
     }
 
     /**
@@ -47,65 +50,59 @@ public class Arvore {
      * @return true se conseguiu inserir chave na árvore, false senão conseguiu
      * @author Valter Henrique
      */
-    public boolean insere(int aChave) {
+    public boolean insere(No aRaiz, int aChave) {
 
-        // se ao buscar a chave e retorna null quer dizer que não existe tal chave na árvore
-        // podendo assim inserir a chave na árvore
-        if (this.buscaChave(raiz, aChave) == null) {
-
-            // tentando inserir a chave na folha apropriada, se houver filhos
-            if (raiz.numFilhos() > 0) {
-                inserirChaveFolha(raiz, aChave);
-            } else {
-                // se não houver filhos ainda, inserir a chave na raiz
-                if (raiz.numChaves() < (iNumMaxFilhos - 1)) {
-                    raiz.addChave(aChave);
-                    ordenarNo(raiz);
-                } // dividindo a raiz quando estiver cheia
-                else {
-                    inserirChaveFolha(raiz, aChave);
-                    //dividirNo(raiz, aChave);
-                }
-            }
-        } else {
+        if (buscaChave(raiz, aChave) != null)
             return false;
-        }
+
+        // se houver espaço a ser inserido na raiz
+            if(aRaiz.numChaves() == iNumMaxChaves){
+                if (aRaiz.numFilhos() == iNumMaxFilhos)
+                    insereNoNaoCheio(aRaiz, aChave);
+                else{
+
+                No noNovo = new No();
+
+                // adicionando o nó raiz como filho do novo nó
+                noNovo.addFilho(aRaiz);
+
+                // dividindo a nó cheio que agora é o filho (que antes era a raiz)
+                this.divideNo(noNovo, 0, noNovo.getFilho(0));
+
+                raiz  = noNovo;
+
+                // como dividimos o nó agora temos um nó com espaço a ser inserido
+                insereNoNaoCheio(noNovo.getFilho(1), aChave);
+                }
+            }else
+                insereNoNaoCheio(aRaiz, aChave);
 
         return true;
     }
 
-    /** Inserindo a chave na folha apropriada
-     *
-     * @param aNo Em qual nó será inserido esta chave
-     * @param aChave Qual chave a ser inserida
-     * @return true se conseguiu inserir a chave, false senão conseguiu inserir
-     * @author Valter Henrique
-     */
-    public boolean inserirChaveFolha(No aNo, int aChave) {
+    public void insereNoNaoCheio(No aNo, int aChave) {
 
-        // 'i' receberá a qual filho pertencerá a nova chave
-        int i = procurarFilho(aNo, aChave);
-
-        // se for inserir mas o nó passado é raiz, sem filhos
-        if (aNo.getListFilhos().isEmpty()) {
-            this.dividirNoRaiz(aNo, aChave);
+        if (aNo.folha()) {
+            aNo.addChave(aChave);
+            ordenarNo(aNo);
         } else {
+            int i = this.procurarFilho(aNo, aChave);
+            int iNumFilhos = aNo.numFilhos();
 
-            // se o nó que foi encontrado para receber a chave tiver espaço para receber a chave
-            // ela será inserida
-            if (aNo.getListFilhos().get(i).getListChaves().size() < (iNumMaxFilhos - 1)) {
-                aNo.getListFilhos().get(i).addChave(aChave);
-                ordenarNo(aNo.getListFilhos().get(i));
-            } // caso não haja espaço no nó, é necessário fazer a divisão do nó.
-            else {
-                //dividirNo(raiz.getListFilhos().get(i), aChave);
-                divideNo(aNo, aNo.getListFilhos().get(i), i);
-                insere(aChave);
+            if (aNo.getFilho(i).numChaves() == iNumMaxChaves) {
+                divideNo(aNo, i, aNo.getFilho(i));
+                i++;
             }
-        }
 
-        return true;
+            if (aNo.numFilhos() >= i) {
+                insereNoNaoCheio(aNo.getFilho(i), aChave);
+            } else {
+                insere(raiz, aChave);
+            }
+
+        }
     }
+
 
     /**
      * Dividindo um nó
@@ -114,110 +111,68 @@ public class Arvore {
      * @param i O índice de onde esta o nó a ser dividido
      * @author Valter Henrique
      */
-    public void divideNo(No aPai, No aFilho, int i) {
+    public void divideNo(No aPai, int i, No aFilho) {
 
         System.out.println("DIVINDO O NÓ !!");
 
         // iMeio terá a posição da chave do meio que subirá para o nó pai
-        int iMeio = this.calcularMeio(aFilho.getListChaves().size());
+        int iMeio = this.calcularMeio(aFilho.numChaves());
 
         System.out.println("CHAVE DO MEIO SERÁ >> " + iMeio);
-        System.out.println("MINIMO SERÁ >> " + this.iNumMinChaves);
-        boolean bFolha;
 
         No noNovo = new No();
 
-        int k = iMeio + 1;
-
-        // se o número de chaves que exitir no nó for maior que a metade + 1
-        while (aFilho.numChaves() > k) {
-            System.out.println("aquiiiiiiiiiiiiiiii");
-            noNovo.getListChaves().add(aFilho.getListChaves().get(k));
-            aFilho.getListChaves().remove(k);
-            //aFilho.removeChave(aFilho, k);
-            k++;
+        // passando as chaves do filho para o novo nó
+        while (aFilho.numChaves() > (iMeio + 1)) {
+            noNovo.addChave(aFilho.getChave(iMeio + 1));
+            aFilho.removeChave(iMeio + 1);
         }
 
-        k = iMeio + 1;
-        // se o nó filho (o qual será dividido) não for folha
-        // então passar os seus filhos (da metade +1) para o novo nó
         if (!aFilho.folha()) {
-            while (k <= aFilho.getListFilhos().size()) {
-                noNovo.addFilho(aFilho.getFilho(k));
-                aFilho.removeChave(k);
-                k++;
+            //passando os filhos (do meio da direita) do nó filho para o novo nó
+            while (aFilho.numFilhos() > (iMeio + 1)) {
+                noNovo.addFilho(aFilho.getFilho(iMeio + 1));
+                aFilho.removeFilho(iMeio + 1);
             }
         }
 
         // adicionando a chave no nó pai
-        aPai.getListChaves().add(i, aFilho.getListChaves().get(iMeio));
-        aFilho.getListChaves().remove(iMeio);
+        aPai.addChaveNoIndice(i, aFilho.getChave(iMeio));
+        aFilho.removeChave(iMeio);
 
-        aPai.getListFilhos().add(i + 1, noNovo);
+        // adicionando novo nó ao pai
+        aPai.addFilhosNoIndice(i + 1, noNovo);
 
-        System.out.print("\n Noh Pai >> ");
-        this.exibirNo(aPai);
+        if (aPai.numChaves() > iNumMaxChaves) {
+            No noRaiz = new No();
+            No noDireita = new No();
 
-        System.out.print("\n Noh Filho >> ");
-        this.exibirNo(aFilho);
+            iMeio = this.calcularMeio(aPai.numChaves());
 
-        System.out.print("\n Noh Novo >> ");
-        this.exibirNo(noNovo);
+            while(aPai.numChaves() > iMeio+1){
+                noDireita.addChave(aPai.getChave(iMeio+1));
+                aPai.removeChave(iMeio+1);
+            }
 
-    }
+            while(aPai.numFilhos() > iMeio+1){
+                noDireita.addFilho(aPai.getFilho(iMeio+1));
+                aPai.removeFilho(iMeio+1);
+            }
 
-    /**
-     * Dividindo o nó raiz quando estiver cheia
-     * @param aNo No a ser dividido
-     * @param aChave A chave a ser inserida neste nó
-     * @author Valter Henrique
-     */
-    public void dividirNoRaiz(No aNo, int aChave) {
+            // subindo a chave para  a nova raiz
+            noRaiz.addChave(aPai.getChave(iMeio));
+            aPai.removeChave(iMeio);
+            
+            // adicionando os filhos a nova raiz
+            // aPai será o nó da esquerda
+            noRaiz.addFilho(aPai);
+            // noDireita será o nó da direita da nova raiz
+            noRaiz.addFilho(noDireita);
 
-        No noEsq = new No();
-        No noDir = new No();
-
-        int iNumChaves = raiz.getListChaves().size();
-        // sabendo quem é o indice do meio, qual chave irá subir na divisão do nó
-        int iMeio = calcularMeio(iNumChaves);
-
-
-        aNo.getListFilhos().add(noEsq);
-        aNo.getListFilhos().add(noDir);
-
-
-        // é (i+1) pois ultrapassaria o indice o qual deverá ser pego para o próximo nó
-        while (aNo.getListChaves().get(0) < aNo.getListChaves().get(iMeio)) {
-            // primeiro tenho que adicionar os valores ao novo nó primeiro para depois adicionar este nó a lista de filhos da raiz
-            noEsq.addChave(raiz.getListChaves().get(0));
-
-            // removendo a chave que foi para outro nó
-            raiz.getListChaves().remove(0);
-
-            // ao remover uma chave, o indice precisa ser atualizado
-            iMeio--;
-        }
-
-        // enquanto houver duas chaves, pelo menos, na raiz, preciso completar o outro nó
-        while (raiz.getListChaves().size() > 1) {
-            noDir.addChave(raiz.getListChaves().get(1));
-
-            // removendo a chave que foi para outro nó
-            raiz.getListChaves().remove(1);
-        }
-
-        // adicionando a chave passada ao nó correto
-        if (aChave < aNo.getListChaves().get(0)) {
-            noEsq.addChave(aChave);
-        } else {
-            noDir.addChave(aChave);
-        }
-
-        ordenarNo(noEsq);
-        ordenarNo(noDir);
-        ordenarNo(aNo);
-
-        exibirNo(aNo);
+            raiz = noRaiz;
+            //noRaiz.addFilho(aPai);
+        } 
+            
     }
 
     /**
@@ -239,12 +194,12 @@ public class Arvore {
             throw new Exception("Elemento não encontrado");
         }
 
-        if (node.folha() == true && node.getListChaves().size() > 1) {
+        if (node.folha() == true && node.numChaves() > 1) {
             node.getListChaves().remove(aChave);
             return true;
         }
 
-        if (node.folha() == true && node.getListChaves().size() == 1) {
+        if (node.folha() == true && node.numChaves() == 1) {
             ///...........
         }
 
@@ -261,15 +216,15 @@ public class Arvore {
      */
     public No buscaChave(No aNo, int aChave) {
         int i = 0;
-        int iNumChaves = aNo.getListChaves().size();
+        int iNumChaves = aNo.numChaves();
 
         // procurando em qual filho deve estar a chave
-        while (i < iNumChaves && aChave > aNo.getListChaves().get(i)) {
+        while (i < iNumChaves && aChave > aNo.getChave(i)) {
             i++;
         }
 
         // se achou a chave, retorna o Nó
-        if (i < iNumChaves && aChave == aNo.getListChaves().get(i)) {
+        if (i < iNumChaves && aChave == aNo.getChave(i)) {
             return aNo;
         }
 
@@ -301,7 +256,7 @@ public class Arvore {
      */
     public void exibir() {
 
-        int iNumFilhos = raiz.getListFilhos().size();
+        int iNumFilhos = raiz.numFilhos();
 
         System.out.println("Numero de filhos da raiz  >> " + iNumFilhos);
 
@@ -327,6 +282,34 @@ public class Arvore {
         }
     }
 
+    public void exibir(No aNo) {
+        System.out.println("NUMERO DE FILHOS É >> " + aNo.numFilhos());
+
+
+        if (aNo.folha()) {
+            exibirNo(aNo);
+        } else {
+            int i = 0;
+            int k = 0;
+
+            while (i < aNo.numFilhos()) {
+                if (k < aNo.numChaves()) {
+                    System.out.println("***********");
+                    System.out.print("Nó Pai >> " + aNo.getChave(k));
+                    System.out.println("\n***********");
+                    k++;
+                }
+                    exibir(aNo.getFilho(i));
+                    i++;
+
+                
+            }
+
+
+        }
+
+    }
+
     /**
      * Exibir chaves do nó passado como parâmetro
      * @param aNo O nó a ter as chaves exibidas
@@ -335,9 +318,12 @@ public class Arvore {
     public void exibirNo(No aNo) {
         Iterator it = aNo.getIteratorChaves();
 
+        System.out.println("------------");
         while (it.hasNext()) {
             System.out.print(it.next() + ", ");
         }
+
+        System.out.println("\n------------");
     }
 
     /**
@@ -348,17 +334,14 @@ public class Arvore {
      */
     public int calcularMeio(int aNumChaves) {
 
-        int iMeio;
-
-        if (aNumChaves % 3 == 0) {
-            iMeio = (int) Math.ceil((double) aNumChaves / (double) 2);
+       if (aNumChaves % 2 == 0) {
+            return (int) Math.ceil((double) (aNumChaves) / (double) 2);
         } else {
-            iMeio = (int) Math.ceil((double) (aNumChaves + 1) / (double) 2);
+           // -1 no final pois os indices começam com 0(zero)
+            return (int) Math.ceil((double) aNumChaves / (double) 2) - 1;
+
         }
 
-        iMeio--;
-
-        return iMeio;
     }
 
     /**
@@ -381,7 +364,7 @@ public class Arvore {
         int i = 0;
         int iTamanho = aNo.getListChaves().size();
 
-        while (i < iTamanho && aChave > aNo.getListChaves().get(i)) {
+        while (i < iTamanho && aChave > aNo.getChave(i)) {
             i++;
         }
 
