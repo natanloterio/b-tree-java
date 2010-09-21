@@ -97,8 +97,20 @@ public class Main {
 
                     System.out.println("-- Valors carregados do arquivo -- ");
 
+
+
+
+
+
+
+
+
+
+
+
+                    
                     // mudar este caminho para o local aonde esta o arquivo 'Dados' no seu computador
-                    list = arq.lerArquivo("C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt");
+                    list = arq.lerArquivo("C:\\Users\\Vitor\\Documents\\NetBeansProjects\\Arvore_B\\trunk\\src\\arvore_b\\Dados.txt");
 
                     // o primeiro valor lido do arquivo será o número máximo de filhos que aquela árvore poderá ter
                     arvore = new Arvore(list.get(0));
