@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package arvore_b;
+import janela.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,11 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        JanelaInicial janela = new JanelaInicial();
+        janela.setVisible(true);
 
-        int iOpcao = 1;
+    }
+        /*int iOpcao = 1;
 
         // int iNumMaxFilhos = numMaxFilhos();
         int iNumMaxFilhos = 5;
@@ -164,5 +168,7 @@ public class Main {
             iNumMaxFilhos = scanner.nextInt();
         }
         return iNumMaxFilhos;
-    }
+    }*/
+
+    
 }

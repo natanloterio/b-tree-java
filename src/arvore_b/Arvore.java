@@ -17,7 +17,7 @@ public class Arvore {
     private No raiz;
     private final int iNumMaxFilhos;
     private final int iNumMinChaves;
-    private final int iNumMaxChaves;
+    private int iNumMaxChaves;
 
     /**
      * Toda árvore precisa saber o número máximo de filhos que terá antes de começar a inserir elementos na mesma
@@ -381,4 +381,26 @@ public class Arvore {
         return i;
 
     }
+
+
+    /*alterei a partir daqui, vou colocar os metodos get e set Ordem
+     tive que tirar do atributo iNumMaximoChaves o identificador final
+     porque pode alterar a ordem */
+
+    /**
+     * este metodo altera a ordem da arvore
+     * @param x sera um valor, do tipo inteiro, passado para alterar o numero maximo de filhos que uma arvore pode ter
+     */
+    public void setMaximoChaves(int x){
+        iNumMaxChaves = x;
+    }
+
+    /**
+     * este metodo retorna o numero maximo de filhos
+     * @return do tipo inteiro
+     */
+    public int getMaximoChaves(){
+        return iNumMaxChaves;
+    }
+
 }
