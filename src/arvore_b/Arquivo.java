@@ -6,8 +6,11 @@ package arvore_b;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -59,4 +62,48 @@ public class Arquivo {
 
         return list;
     }
+        /**
+         * Este método irá gerar valores aleatórios no arquivo que esta sendo passado como parâmetro
+         * @param sArqGravar O caminho para o arquivo já exisnte, ele será sobreescrito após a operação
+         * @param aNumMaxFilhos O número máximo de filhos que esta árvore terá
+         * @param aValorMaxChaves Serve para delimitar o valor aleatório gerado aleatóriamente
+         * @param aQtdChaves Limita um número de chaves aleatórias que serão criadas
+         * @author Valter Henrique
+         */
+        public void gerarDadosAleatório(String sArqGravar, int aNumMaxFilhos, int aValorMaxChaves, int aQtdChaves) {
+
+            Random random = new Random();
+
+        //lendo sLinhas
+        try {
+            // ler o arquivo
+            FileReader i = new FileReader(sArqGravar);
+            BufferedReader in = new BufferedReader(i);
+
+            FileWriter writer = new FileWriter(sArqGravar);
+            PrintWriter saida = new PrintWriter(writer);
+
+            int iCont = 0;
+            
+            saida.println(aNumMaxFilhos);
+
+            int iValor;
+
+            while ( iCont < aQtdChaves) {
+                iValor = random.nextInt(aValorMaxChaves);
+                saida.println(iValor);
+
+                iCont++;
+                }
+            i.close();
+            
+            writer.close();
+            saida.close();
+            
+        } catch (Exception x) {
+            System.out.println(x.getMessage());
+        }
+
+    }
+
 }

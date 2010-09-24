@@ -29,7 +29,7 @@ public class Arvore {
         // Calculando o mínimo de chaves que um nó nesta árvore poderá ter
         iNumMinChaves = (int) Math.floor(((double) (iNumMaxFilhos - 1)) / ((double) 2));
         iNumMaxChaves = iNumMaxFilhos - 1;
-        raiz = new No();;
+        raiz = new No();
     }
 
     /**
@@ -72,7 +72,8 @@ public class Arvore {
                 raiz  = noNovo;
 
                 // como dividimos o nó agora temos um nó com espaço a ser inserido
-                insereNoNaoCheio(noNovo.getFilho(1), aChave);
+                //insereNoNaoCheio(noNovo.getFilho(1), aChave);
+                insere(aRaiz, aChave);
                 }
             }else
                 insereNoNaoCheio(aRaiz, aChave);
@@ -334,15 +335,7 @@ public class Arvore {
      * @author Valter Henrique
      */
     public int calcularMeio(int aNumChaves) {
-
-       if (aNumChaves % 2 == 0) {
-            return (int) Math.ceil((double) (aNumChaves) / (double) 2);
-        } else {
-           // -1 no final pois os indices começam com 0(zero)
-            return (int) Math.ceil((double) aNumChaves / (double) 2) - 1;
-
-        }
-
+        return (int) Math.ceil((double) aNumChaves / (double) 2) - 1;
     }
 
     /**
