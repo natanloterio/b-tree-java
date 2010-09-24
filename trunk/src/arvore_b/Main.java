@@ -21,11 +21,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+      /*
         JanelaInicial janela = new JanelaInicial();
         janela.setVisible(true);
 
     }
-        /*int iOpcao = 1;
+    */
+        int iOpcao = 1;
 
         // int iNumMaxFilhos = numMaxFilhos();
         int iNumMaxFilhos = 5;
@@ -42,6 +44,7 @@ public class Main {
             System.out.println(" 5 - Carregar arquivo");
             System.out.println(" 6 - Limpar árvore");
             System.out.println(" 7 - Busca chave");
+            System.out.println(" 9 - Gerar arquivo aleatório");
             System.out.println(" 0 - Sair");
             System.out.print(">> ");
 
@@ -101,20 +104,8 @@ public class Main {
 
                     System.out.println("-- Valors carregados do arquivo -- ");
 
-
-
-
-
-
-
-
-
-
-
-
-                    
                     // mudar este caminho para o local aonde esta o arquivo 'Dados' no seu computador
-                    list = arq.lerArquivo("C:\\Users\\Vitor\\Documents\\NetBeansProjects\\Arvore_B\\trunk\\src\\arvore_b\\Dados.txt");
+                    list = arq.lerArquivo("C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\trunk\\src\\arvore_b\\Dados.txt");
 
                     // o primeiro valor lido do arquivo será o número máximo de filhos que aquela árvore poderá ter
                     arvore = new Arvore(list.get(0));
@@ -147,6 +138,23 @@ public class Main {
                     System.out.println("Arvore vazia !\nOperação não possível !");
                     break;
 
+                case 9:
+                    Arquivo arqRandomico = new Arquivo();
+
+                    int iValorMaxChave;
+                    int iQtdChaves;
+
+                    iNumMaxFilhos = numMaxFilhos();
+
+                    System.out.print("Informe o valor máximo que uma chave poderá ter >> ");
+                    iValorMaxChave = scanner.nextInt();
+
+                    System.out.print("Quantas chaves aleatórias serão criadas >> ");
+                    iQtdChaves = scanner.nextInt();
+
+                    arqRandomico.gerarDadosAleatório("C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\trunk\\src\\arvore_b\\Dados.txt", iNumMaxFilhos, iValorMaxChave, iQtdChaves);
+                    break;
+
                 default:
                     System.out.println("Esta não é uma opção válida!");
             }
@@ -168,7 +176,7 @@ public class Main {
             iNumMaxFilhos = scanner.nextInt();
         }
         return iNumMaxFilhos;
-    }*/
+    }
 
     
 }
