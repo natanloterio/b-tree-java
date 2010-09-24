@@ -17,7 +17,7 @@ public class No {
      * seta todos os filhos para NULL;
      * Valter : isso é mesmo necessário? Se não há filhos, o tamanho da listFilhos será 0.
      * @author : Arthur Mazer
-    */
+     */
     public No() {
         int i;
         for (i = 0; i < this.listFilhos.size(); i++) {
@@ -49,6 +49,7 @@ public class No {
      * @author Valter Henrique
      */
     public void addChave(int aChave) {
+
         listChaves.add(aChave);
     }
 
@@ -58,7 +59,7 @@ public class No {
      * @param aChave A chave a ser inserida
      * @author Valter Henrique
      */
-    public void addChaveNoIndice(int index, int aChave){
+    public void addChaveNoIndice(int index, int aChave) {
         listChaves.add(index, aChave);
     }
 
@@ -68,7 +69,7 @@ public class No {
      * @param aNo O nó a ser inserido
      * @author Valter Henrique
      */
-    public void addFilhosNoIndice(int index, No aNo){
+    public void addFilhosNoIndice(int index, No aNo) {
         listFilhos.add(index, aNo);
     }
 
@@ -78,7 +79,7 @@ public class No {
      * @return O indice o qual contém a chave
      * @author Valter Henrique
      */
-    public int getChave(int index){
+    public int getChave(int index) {
         return listChaves.get(index);
     }
 
@@ -87,7 +88,7 @@ public class No {
      * @param aNo
      * @author Valter Henrique
      */
-    public void addFilho(No aNo){
+    public void addFilho(No aNo) {
         listFilhos.add(aNo);
     }
 
@@ -97,7 +98,7 @@ public class No {
      * @param index - o índice aonde será removido a chave
      * @author Valter Henrique
      */
-    public void removeChave(int index){
+    public void removeChave(int index) {
         System.out.println("REMOVENDO CHAVE");
         System.out.println(listChaves.remove(index));
     }
@@ -107,7 +108,7 @@ public class No {
      * @param index Indice de qual filho será removido
      * @author Valter Henrique
      */
-    public void removeFilho(int index){
+    public void removeFilho(int index) {
         listFilhos.remove(index);
     }
 
@@ -117,7 +118,7 @@ public class No {
      * @return o número de chaves ativas que o nó possui atualmente
      * @author Valter Henrique
      */
-    public int numChaves(){
+    public int numChaves() {
         return listChaves.size();
     }
 
@@ -126,7 +127,7 @@ public class No {
      * @return O número de nós que o nó possui
      * @author Valter Henrique
      */
-    public int numFilhos(){
+    public int numFilhos() {
         return listFilhos.size();
     }
 
@@ -153,10 +154,61 @@ public class No {
      * @author Arthur Mazer
      */
     public boolean folha() {
-        if (this.listFilhos.isEmpty())
+        if (this.listFilhos.isEmpty()) {
             return true;
+        }
 
         return false;
 
+    }
+
+    public No filhoEsquerdo(int aChave) {
+        return (this.getListFilhos().get(this.getIndexChave(aChave)));
+    }
+
+    public No filhoDireito(int aChave) {
+        return (this.getListFilhos().get(this.getIndexChave(aChave) + 1));
+    }
+
+    /**
+     * Método que retorna o índice da chave dentro de um nó, caso a chave
+     * nao exista no nó, retorna -1
+     * @param aChave
+     * @return int
+     */
+    public int getIndexChave(int aChave) {
+        int i;
+        for (i = 0; i < this.getListChaves().size(); i++) {
+
+            if (this.getListChaves().get(i) == aChave) {
+                return i;
+            }
+
+        }
+
+        return -1;
+    }
+
+    /**
+     * Método que devolve o nó que contem a Chave antecessora da Chave desejada
+     * @param aChave
+     * @return No
+     */
+    public No getAntecessor(int aChave){
+        return this.noAntecessor(this.getFilho(this.getIndexChave(aChave)));
+    }
+
+    /**
+     * Método auxilar ao getAntecessor
+     * @param node
+     * @return no
+     */
+    public No noAntecessor(No node) {
+        if (node.folha()) {
+            return node;
+        } else {
+            return node.noAntecessor(node.getFilho(node.getListFilhos().size() - 1));
+        
+        }
     }
 }

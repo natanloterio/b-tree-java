@@ -194,24 +194,15 @@ public class Arvore {
             throw new Exception("Elemento não encontrado");
         }
 
-        if (node.folha() == true && node.numChaves() > 1) {
+
+        /*Caso 1:
+         *       O elemento procurado é folha         *
+         */
+        if ( node.folha() )  {
             node.getListChaves().remove(aChave);
             return true;
         }
 
-        if (node.folha() == true && node.numChaves() == 1) {
-            ///...........
-
-
-            //
-            //
-            // testando submissáo sherman
-
-            //
-            //
-            //
-            
-        }
 
 
         return true;
@@ -402,5 +393,33 @@ public class Arvore {
     public int getMaximoChaves(){
         return iNumMaxChaves;
     }
+
+    /**
+     * Retorna o número minimo de chaves a serem armazenadas em um nó
+     * @return INT
+     */
+    public int getMinimoChaves(){
+        return iNumMinChaves;
+    }
+
+    /**
+     * Método que permuta aChave e seu antecessor de nó
+     * @param node
+     * @param aChave
+     */
+    public void trocaAntecessor(No node,int aChave){
+        No node_aux = node.getAntecessor(aChave);
+        int K;
+
+        K = node_aux.getListChaves().get(node_aux.getListChaves().size()-1);
+
+        node_aux.removeChave(node_aux.getIndexChave(K));
+        node_aux.addChave(aChave);
+
+        node.removeChave(node.getIndexChave(aChave));
+        node.addChave(K);
+    }
+
+
 
 }
