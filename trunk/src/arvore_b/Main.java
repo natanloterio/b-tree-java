@@ -30,7 +30,8 @@ public class Main {
 
         int iOpcao = 1;
         // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
-        String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
+        //String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
+        String sArquivo = "C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\Arvore B\\trunk\\src\\arvore_b\\Dados.txt";
 
         // int iNumMaxFilhos = numMaxFilhos();
         int iNumMaxFilhos = 3;
