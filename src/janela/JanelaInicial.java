@@ -126,7 +126,10 @@ public class JanelaInicial extends JFrame
                     int k;
                     try{
                         k = Integer.parseInt(s);
-			mytree.insere(mytree.getRaiz(), k);
+
+                        //mytree.insere(mytree.getRaiz(), k);
+                        mytree.insere(k);
+
 			//pBinTree.updateCanvas();
 			pBinTree.repaint();
                     }
@@ -161,7 +164,7 @@ public class JanelaInicial extends JFrame
 		}
                  if(e.getSource() == bInsereN){
                      // vou chamar o metodo mostrar aqui, por enquanto
-                     mytree.exibir();
+                     //mytree.exibir();
                  }
 
                 if(e.getSource() == bAlteraOrdem){

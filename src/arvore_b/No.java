@@ -98,9 +98,23 @@ public class No {
      * @param index - o índice aonde será removido a chave
      * @author Valter Henrique
      */
-    public void removeChave(int index) {
-        System.out.println("REMOVENDO CHAVE");
-        System.out.println(listChaves.remove(index));
+    public void removeChavePeloIndice(int index) {
+        this.listChaves.remove(index);
+    }
+
+    /**
+     * Removendo determinada chave passando o seu valor apenas
+     * @param aChave A chave a ser removida
+     * @author Valter Henrique
+     */
+    public void removeChavePeloValor(int aChave){
+        if (this.listChaves.contains(aChave)){
+            int i = 0;
+            while(aChave != this.listChaves.get(i))
+                i++;
+
+            this.listChaves.remove(i);
+        }
     }
 
     /**
@@ -139,6 +153,19 @@ public class No {
     public Iterator getIteratorChaves() {
         return listChaves.iterator();
     }
+
+    /**
+     * Método que verifica se o nó contém a chave
+     * @param aChave A chave a qual procuramos
+     * @return Retorna true se contiver a chave procurada, false se não tiver a chave
+     * @author Valter Henrique
+     */
+     public boolean contemChave(int aChave){
+        return this.listChaves.contains(aChave);
+    }
+
+     
+    /**************** SHERMAN ***********************************/
 
     /** Retorna o filho desejado
      * @param index
@@ -211,4 +238,6 @@ public class No {
         
         }
     }
+
+  
 }
