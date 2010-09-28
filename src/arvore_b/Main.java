@@ -29,8 +29,8 @@ public class Main {
     */
         int iOpcao = 1;
 
-        // int iNumMaxFilhos = numMaxFilhos();
-        int iNumMaxFilhos = 5;
+        int iNumMaxFilhos = numMaxFilhos();
+        //int iNumMaxFilhos = 5;
 
         Scanner scanner = new Scanner(System.in);
         Arvore arvore = new Arvore(iNumMaxFilhos);
