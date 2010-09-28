@@ -27,10 +27,13 @@ public class Main {
 
     }
     */
-        int iOpcao = 1;
 
-        int iNumMaxFilhos = numMaxFilhos();
-        //int iNumMaxFilhos = 5;
+        int iOpcao = 1;
+        // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
+        String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
+
+        // int iNumMaxFilhos = numMaxFilhos();
+        int iNumMaxFilhos = 3;
 
         Scanner scanner = new Scanner(System.in);
         Arvore arvore = new Arvore(iNumMaxFilhos);
@@ -71,7 +74,7 @@ public class Main {
                     System.out.println("Inserir >> ");
                     iInserir = scanner.nextInt();
 
-                    if (arvore.insere(arvore.getRaiz(), iInserir)) {
+                    if (arvore.insere(iInserir)) {
                         System.out.println("Chave inserida com sucesso!");
                     } else {
                         System.out.println("Não foi possível inserir a chave!\nChave JÁ EXISTENTE!!");
@@ -105,7 +108,7 @@ public class Main {
                     System.out.println("-- Valors carregados do arquivo -- ");
 
                     // mudar este caminho para o local aonde esta o arquivo 'Dados' no seu computador
-                    list = arq.lerArquivo("C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\trunk\\src\\arvore_b\\Dados.txt");
+                    list = arq.lerArquivo(sArquivo);
 
                     // o primeiro valor lido do arquivo será o número máximo de filhos que aquela árvore poderá ter
                     arvore = new Arvore(list.get(0));
@@ -113,7 +116,8 @@ public class Main {
                     int i = 1;
                     // inserindo os valores restantes na arvore
                     while (i < list.size()) {
-                        arvore.insere(arvore.getRaiz(), list.get(i));
+                        arvore.insere(list.get(i));
+                        //arvore.insere(arvore.getRaiz(), list.get(i));
                         i++;
                     }
                     break;
@@ -152,7 +156,7 @@ public class Main {
                     System.out.print("Quantas chaves aleatórias serão criadas >> ");
                     iQtdChaves = scanner.nextInt();
 
-                    arqRandomico.gerarDadosAleatório("C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\trunk\\src\\arvore_b\\Dados.txt", iNumMaxFilhos, iValorMaxChave, iQtdChaves);
+                    arqRandomico.gerarDadosAleatório(sArquivo, iNumMaxFilhos, iValorMaxChave, iQtdChaves);
                     break;
 
                 default:
