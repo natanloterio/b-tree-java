@@ -73,6 +73,7 @@ public class Arquivo {
         public void gerarDadosAleatório(String sArqGravar, int aNumMaxFilhos, int aValorMaxChaves, int aQtdChaves) {
 
             Random random = new Random();
+            List<Integer> listChaves = new ArrayList<Integer>();
 
         //lendo sLinhas
         try {
@@ -91,10 +92,13 @@ public class Arquivo {
 
             while ( iCont < aQtdChaves) {
                 iValor = random.nextInt(aValorMaxChaves);
-                saida.println(iValor);
 
-                iCont++;
+                if (!listChaves.contains(iValor)){
+                    listChaves.add(iValor);
+                    saida.println(iValor);
+                    iCont++;
                 }
+            }
             i.close();
             
             writer.close();
