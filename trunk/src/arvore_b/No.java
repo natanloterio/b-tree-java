@@ -1,6 +1,7 @@
 package arvore_b;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -162,6 +163,29 @@ public class No {
      */
      public boolean contemChave(int aChave){
         return this.listChaves.contains(aChave);
+    }
+
+    /**
+     * Retorna a chave de maior valor dentro de um nó passado como parâmetro
+     * @param aNo O nó o qual queremos saber qual sua maior chave
+     * @return Retorna a chave de maior valor neste nó
+     * @author Valter Henrique
+     */
+    public int maiorChave() {
+        return this.listChaves.get(this.listChaves.size() - 1);
+    }
+
+    public int menorChave(){
+        return this.listChaves.get(0);
+    }
+
+     /**
+     * Ordena as chaves ativas dentro de um nó
+     * @param aNo O nó a ser ordenado
+     * @author Valter Henrique
+     */
+    public void ordenarNo() {
+        Collections.sort(this.listChaves);
     }
 
      

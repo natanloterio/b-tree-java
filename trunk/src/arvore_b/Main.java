@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.lang.String;
 import java.lang.Throwable;
+import java.util.Random;
 
 /**
  *
@@ -29,15 +30,19 @@ public class Main {
     */
 
         int iOpcao = 1;
+
         // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
-        //String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
-        String sArquivo = "C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\Arvore B\\trunk\\src\\arvore_b\\Dados.txt";
+        String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore B\\trunk\\src\\arvore_b\\Dados.txt";
+        //String sArquivo = "C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\Arvore B\\trunk\\src\\arvore_b\\Dados.txt";
+
 
         // int iNumMaxFilhos = numMaxFilhos();
         int iNumMaxFilhos = 3;
 
         Scanner scanner = new Scanner(System.in);
         Arvore arvore = new Arvore(iNumMaxFilhos);
+        List<Integer> list = new ArrayList<Integer>();
+        Random random = new Random();
 
         while (iOpcao != 0) {
             System.out.println(" -- Arvore Binária -- ");
@@ -84,13 +89,34 @@ public class Main {
 
                 case 2:
                     int iRemover;
-                    System.out.println("Remover >> ");
-                    iRemover = scanner.nextInt();
-                    try {
-                        arvore.remove(iRemover);
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                    int iOpcaoRemover;
+                    System.out.println("(1) Informar valor ");
+                    System.out.println("(2) Remover valor aleatóriamente");
+                    System.out.print("\n>> ");
+                    iOpcaoRemover = scanner.nextInt();
+                    
+                    if (iOpcaoRemover == 1) {
+                        System.out.println("Remover >> ");
+                        iRemover = scanner.nextInt();
+                        if (arvore.remove(iRemover)) {
+                            System.out.println("Chave removida com sucesso !");
+                        } else {
+                            System.out.println("Chave não existe na árvore");
+                        }
+                    }else{
+                        int i = random.nextInt(list.size());
+                        iRemover = list.get(i);
+                        list.remove(i);
+                        
+                        System.out.println("Remover (aleatóriamente) >> " + iRemover);
+                        //list.remove(iRemover);
+                        if (arvore.remove(iRemover)) {
+                            System.out.println("Chave removida com sucesso !");
+                        } else {
+                            System.out.println("Chave não existe na árvore");
+                        }
                     }
+
                     break;
 
                 case 3:
@@ -104,7 +130,6 @@ public class Main {
                 // os valores que serão inseridos na árvore podem ser carregados atráves de um arquivo, chamando 'Dados'
                 case 5:
                     Arquivo arq = new Arquivo();
-                    List<Integer> list = new ArrayList<Integer>();
 
                     System.out.println("-- Valors carregados do arquivo -- ");
 
