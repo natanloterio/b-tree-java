@@ -196,52 +196,58 @@ public class Arvore {
         }
     }
 
-/**
- * Realiza a remoção de uma chave contida na árvore
- * @param aChave A chave a ser removida
- * @return true se achou e removeu a chave, false se não achou a chave na árvore
- * @author Arthur Mazer, Valter Henrique
- */
-    boolean remove(int aChave){
+    /**
+     * Realiza a remoção de uma chave contida na árvore
+     * @param aChave A chave a ser removida
+     * @return true se achou e removeu a chave, false se não achou a chave na árvore
+     * @author Arthur Mazer, Valter Henrique
+     */
+    boolean remove(int aChave) {
         // se ao procurar a chave na árvore e não encontrar
-        if(this.buscaChave(raiz, aChave) == null){
+        if (this.buscaChave(raiz, aChave) == null) {
             return false;
-        }else{
+        } else {
             // se a chave a ser removida existir na árvore
             No noRemove = this.buscaChave(raiz, aChave);
-            
+
             // se o nó que contém a chave for folha
-            if (noRemove.folha()){
+            if (noRemove.folha()) {
                 noRemove.removeChavePeloValor(aChave);
 
-                if (noRemove != raiz){
+                if (noRemove != raiz) {
                     balanceia_folha(noRemove);
                 }
 
-            }
-            // se o nó que contém a chave não for folha
-            else{
-                if (!noRemove.folha()){
+            } // se o nó que contém a chave não for folha
+            else {
+                if (!noRemove.folha()) {
 
                     No noAntecessor = buscaAntecessor(aChave);
-                    int iMaiorChaveAntecessor = noAntecessor.maiorChave();
 
-                    System.out.println("O ANTECESSOR EH >>  " + iMaiorChaveAntecessor);
+                    if (noAntecessor.numChaves() > 1) {
 
-                    noAntecessor.removeChavePeloValor(iMaiorChaveAntecessor);
+                        int iMaiorChaveAntecessor = noAntecessor.maiorChave();
 
-                    noRemove.removeChavePeloValor(aChave);
-                    noRemove.addChave(iMaiorChaveAntecessor);
-                    noRemove.ordenarNo();
+                        System.out.println("O ANTECESSOR EH >>  " + iMaiorChaveAntecessor);
 
-                    balanceia_folha(noAntecessor);
+                        noAntecessor.removeChavePeloValor(iMaiorChaveAntecessor);
 
+                        noRemove.removeChavePeloValor(aChave);
+                        noRemove.addChave(iMaiorChaveAntecessor);
+                        noRemove.ordenarNo();
+
+                        balanceia_folha(noAntecessor);
+                    } else {
+                        if (noRemove == raiz) {
+                            raiz = diminuiAltura_v2(noRemove);
+                        }
+
+                    }
                 }
             }
         }
         return true;
     }
-
 
     /**
      * Balanceando o nó folho passado como parâmetro
@@ -265,8 +271,8 @@ public class Arvore {
                 } else {
                     balanceia_dir_esq(noPai, j, aNo, noPai.getFilho(j + 1));
                 }
-            }else{
-                balanceia_dir_esq(noPai, j-1, noPai.getFilho(j-1), aNo);
+            } else {
+                balanceia_dir_esq(noPai, j - 1, noPai.getFilho(j - 1), aNo);
             }
         }
     }
@@ -324,13 +330,48 @@ public class Arvore {
 
     }
 
+    No diminuiAltura_v2(No aNo) {
+        int iNumChaves = aNo.numChaves();
+        No noEsq = new No();
+        for (int iFilho = 0; iFilho < iNumChaves; iFilho++) {
+            if (aNo.getFilho(iFilho).numChaves() == iNumMinChaves && aNo.getFilho(iFilho + 1).numChaves() == iNumMinChaves) {
+                noEsq = aNo.getFilho(iFilho);
+                No noDir = aNo.getFilho(iFilho + 1);
+
+                for (int j = 0; j < noDir.numChaves(); j++) {
+                    noEsq.addChave(noDir.getChave(0));
+                    noDir.removeChavePeloIndice(0);
+
+                    noEsq.addFilho(noDir.getFilho(j));
+                    noEsq.addFilho(noDir.getFilho(j + 1));
+
+                    noDir.removeFilho(j);
+                    noDir.removeFilho(j);
+
+                    No noEsqFilho = noEsq.getFilho(j);
+                    No noDirFilho = noEsq.getFilho(j + 1);
+
+                    for (int k = 0; k < noDirFilho.numChaves(); k++) {
+                        noEsqFilho.addChave(noDirFilho.getChave(0));
+                        noDirFilho.removeChavePeloIndice(0);
+                    }
+
+                    noEsq.removeFilho(j + 1);
+
+                }
+                exibirNo(noEsq);
+            }
+        }
+        return noEsq;
+    }
+
     void diminuiAltura(No aNo) {
         System.out.println("DENTRO DO DIMINUI ALTURA ");
-        
+
         if (aNo == raiz) {
             System.out.println("ANO = RAIZ");
             exibirNo(aNo);
-            
+
             if (aNo.numChaves() == 0) {
                 //raiz.addChave(aNo.getChave(0));
                 raiz = aNo.getFilho(0);
@@ -353,35 +394,35 @@ public class Arvore {
 
                 //System.out.println("MOSTRANDO O PAI >> ");
                 //exibirNo(noPai);
-               diminuiAltura(noPai);
+                diminuiAltura(noPai);
 
             }
         }
 
     }
-    
-    void juncaoNo(No aNo, int iIndice){
+
+    void juncaoNo(No aNo, int iIndice) {
         No noEsq = aNo.getFilho(iIndice);
-        No noDir = aNo.getFilho(iIndice+1);
+        No noDir = aNo.getFilho(iIndice + 1);
 
         noEsq.addChave(aNo.getChave(iIndice));
         aNo.removeChavePeloIndice(iIndice);
 
-        while (noDir.numChaves() > 0){
+        while (noDir.numChaves() > 0) {
             noEsq.addChave(noDir.getChave(0));
             noDir.removeChavePeloIndice(0);
         }
 
         noEsq.ordenarNo();
 
-        if (!noDir.folha()){
-            while(noDir.numFilhos() > 0){
+        if (!noDir.folha()) {
+            while (noDir.numFilhos() > 0) {
                 noEsq.addFilho(noDir.getFilho(0));
                 noDir.removeFilho(0);
             }
         }
 
-        aNo.removeFilho(iIndice+1);
+        aNo.removeFilho(iIndice + 1);
 
     }
 
@@ -418,7 +459,6 @@ public class Arvore {
         return aNo;
 
     }
-
 
     /**
      * Buscando o pai de um terminado nó passando somente a maior chave do nó o qual eu quero saber quem é seu pai, mande sempre a raiz como parâmetro que o método recursivamente irá encontrar o pai, caso não tenha nenhum pai, é por que ele já é a raiz
@@ -482,14 +522,13 @@ public class Arvore {
      * @return Retorna o nó que contém a chave antecessora
      */
     No buscaAntecessor(int aChave) {
-        int iChave = aChave - 1 ;
-        while (this.buscaChave(raiz, iChave) == null){
+        int iChave = aChave - 1;
+        while (this.buscaChave(raiz, iChave) == null) {
             iChave--;
         }
 
         return this.buscaChave(raiz, iChave);
     }
-
 
     /**
      * Exibe as chaves da árvore
@@ -560,8 +599,6 @@ public class Arvore {
         return i;
 
     }
-
-
 
     /**************** SHERMAN ***********************************/
 
