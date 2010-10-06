@@ -258,7 +258,7 @@ public class Arvore {
             }
 
             if (j == 0 || noPai.getFilho(j - 1).numChaves() == iNumMinChaves) {
-                if ((j == noPai.numChaves() + 1) || noPai.getFilho(j + 1).numChaves() == iNumMinChaves) {
+                if ((j == noPai.numChaves()) || noPai.getFilho(j + 1).numChaves() == iNumMinChaves) {
                     diminuiAltura(aNo);
                 } else {
                     balanceia_dir_esq(noPai, j, aNo, noPai.getFilho(j + 1));
