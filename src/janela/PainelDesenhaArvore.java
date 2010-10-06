@@ -11,6 +11,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Line2D;
 import java.math.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PainelDesenhaArvore extends JPanel {
@@ -47,7 +49,7 @@ public class PainelDesenhaArvore extends JPanel {
 		int i;
                 int anda = 0;
                 int tamanhoRetangulo;
-                int altura;
+                int alturaArvore;
                 int constante = 40; // QUANTO QUE VAI "ANDAR" NO Y A CADA ALTURA DA ARVORE
                 double tamanhoOcupado;
                 int altRet;
@@ -55,14 +57,14 @@ public class PainelDesenhaArvore extends JPanel {
                 tamanhoRetangulo = maxChaves  * 20; // o tamanho do retangulo é dado pelo numero maximo de chaves * 23(pixels) para os numeros ficarem bem espacados
                 altRet = 20;
                 
-                altura = arvore.getAlturaArvore(arvore.getRaiz(), 0);
-                tamanhoOcupado = calculaTamanhoOcupado(arvore.getRaiz(), altura,tamanhoRetangulo,maxChaves);
-                System.out.println("altura = " + altura);
+                alturaArvore = arvore.getAlturaArvore(arvore.getRaiz(), 0);
+                tamanhoOcupado = calculaTamanhoOcupado(arvore.getRaiz(), alturaArvore,tamanhoRetangulo,maxChaves);
+                System.out.println("altura = " + alturaArvore);
                 System.out.println("tamanho Ocupado  = " + tamanhoOcupado);
-                if(altura < 2 ){
+                if(alturaArvore < 2 ){
                     n.setX(300); // nao precisa centralizar a raiz, pq os nos filhos cabem na tela
                 }else{
-                    n.setX((int)tamanhoOcupado/2 + 100);
+                    n.setX((int)tamanhoOcupado/2 + 100); // senao centraliza a raiz
                 }
                 
                 n.setY(30);
@@ -80,8 +82,8 @@ public class PainelDesenhaArvore extends JPanel {
                 anda = 0;
                 //desenhando a linha
 
-                
-                desenhaFilhos(n,altura,constante,tamanhoRetangulo,altRet,g2);
+                int alturaAtual=0;
+                desenhaFilhos(n,g2);
 		return;
 	}
 
@@ -95,61 +97,64 @@ public class PainelDesenhaArvore extends JPanel {
         }
 
 
-        public void desenhaFilhos(No n, int altura,int constante, int tamanhoRetangulo,int altRet,Graphics2D g2){
+        public void desenhaFilhos(No n, Graphics2D g2){
+           //alturaAtual++;
+           int i;
+           int anda = 0;
+           int tamanhoRetangulo;
+           int alturaArvore;
+           int constante = 40; // QUANTO QUE VAI "ANDAR" NO Y A CADA ALTURA DA ARVORE
+           int altRet = 20; // padrao adotado para altura do retangulo
+           int j = 0;
+           int armazenaCoordenadaX = 0 ; //essa variavel armazena o valor da coordenada X do aux, util para depois setar o proximo x do novo aux
+           int espacoEntreLinhas=0; // espaco para tracar as linhas
+           int espacoEntreRetangulos = 10; // k = espaco entre os retangulos
+           alturaArvore = arvore.getAlturaArvore(arvore.getRaiz(), 0);
+           tamanhoRetangulo = arvore.getMaximoChaves()  * 20; // o tamanho do retangulo é dado pelo numero maximo de chaves * 20(pixels) para os numeros ficarem bem espacados
 
-            int anda = 0;
-            int i = 0;
-            int j = 0;
-            int armazena = 0 ;
-            int linha=0;
-            int k = 10; // k = espaco entre os retangulos
             //System.out.println("coordenada n.x" + n.getX());
             //System.out.println("coordenada n.y" + n.getY());
-
-
-
-            No aux;
+           List<No> filhos = new ArrayList<No>(); //lista de filhos do no passado por parametro
+           //No aux;
             if(!n.folha()){ // mostrar os filhos da Raiz - OK
 
                 while ( j < n.numFilhos() ){
-                    aux = n.getListFilhos().get(j);
-                    aux.setY(n.getY() + constante);
+                    filhos.add(j,n.getListFilhos().get(j)); // setando a posicao da lista, com a lista de filhos
+                    filhos.get(j).setY(n.getY() + constante);
 
                     if(j == 0){ // seta a primeira coordenada com a condicao valida para altura = 1
-                        aux.setX(n.getX()- tamanhoRetangulo - k); // essa condicao eh valida para h = 1
+                        filhos.get(j).setX(n.getX()- tamanhoRetangulo - espacoEntreRetangulos); // essa condicao eh valida para h = 1
                     }
                     if(j != 0 ){
-                        aux.setX(armazena + tamanhoRetangulo + k);
+                        filhos.get(j).setX(armazenaCoordenadaX + tamanhoRetangulo + espacoEntreRetangulos);
                     }
 
 
                     g2.setColor(Color.LIGHT_GRAY);
-                    g2.fill( new Rectangle2D.Double(aux.getX() ,aux.getY(),tamanhoRetangulo,altRet));
+                    g2.fill( new Rectangle2D.Double(filhos.get(j).getX() ,filhos.get(j).getY(),tamanhoRetangulo,altRet));
 
-                    No pai = arvore.buscaPaiDoNo(aux,arvore.getRaiz());  // pegar o pai do filho (aux) para desenahr a linha
+                    No pai = arvore.buscaPaiDoNo(filhos.get(j),arvore.getRaiz());  // pegar o pai do filho (aux) para desenahr a linha
 
                     g2.setPaint(Color.BLACK);
-                    for(i=0;i<aux.numChaves();i++){
-                        g2.drawString(Integer.toString(aux.getChave(i)), aux.getX() + anda, aux.getY() + 12);
+                    for(i=0;i<filhos.get(j).numChaves();i++){
+                        g2.drawString(Integer.toString(filhos.get(j).getChave(i)), filhos.get(j).getX() + anda, filhos.get(j).getY() + 12);
                         anda += 16;
                     }
                      anda = 0;
                      
                     // desenhar a linha
-                    g2.draw(new Line2D.Double(aux.getX(), aux.getY(),pai.getX()+linha,pai.getY()+altRet - 3));
-                    linha +=18;
+                    g2.draw(new Line2D.Double(filhos.get(j).getX(), filhos.get(j).getY(),pai.getX()+espacoEntreLinhas,pai.getY()+altRet - 3));
+                    espacoEntreLinhas +=18;
 
 
-                   armazena = aux.getX(); // essa variavel armazena o valor da coordenada X
+                   armazenaCoordenadaX = filhos.get(j).getX(); // essa variavel armazena o valor da coordenada X
                    // isto eh util, para depois setar o proximo x do novo aux
                    
                     j = j+ 1;
 
-                    //desenhar os filhos dos aux ????
                 }
                 
            }
-                // mostrar os filhos dos filhos agora
         }
 }
 /*
