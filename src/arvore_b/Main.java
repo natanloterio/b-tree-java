@@ -1,4 +1,5 @@
 package arvore_b;
+import janela.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +18,12 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /*
+        
         // se quiser ver a interface gráfica
         JanelaInicial janela = new JanelaInicial();
         janela.setVisible(true);
         }
-        */
+        /*
         
         // caso queira ver o resultado na saída, na tela de saída do Netbeans
         int iOpcao = 1;
@@ -206,5 +207,5 @@ public class Main {
             iNumMaxFilhos = scanner.nextInt();
         }
         return iNumMaxFilhos;
-    }
+    }*/
 }
