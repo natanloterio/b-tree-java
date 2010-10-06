@@ -174,6 +174,7 @@ public class JanelaInicial extends JFrame
                     tCampo.setText("");
                     try{
                         k = Integer.parseInt(s);
+                        mytree.remove(k);
                         //metodo remove
                         pBinTree.repaint();
                     }
