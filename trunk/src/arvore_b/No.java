@@ -13,6 +13,12 @@ public class No {
 
     private List<Integer> listChaves = new ArrayList<Integer>();
     private List<No> listFilhos = new ArrayList<No>();
+    /*Alterei isto*/
+    private int X;                          //coordenada X deste nó na tela da aplicação
+    private int Y;                          //coordenada Y deste nó na tela da aplicação
+    private final int width = 30;           //diâmetro do (desenho) nó
+    private final int levelDistance = 40;   //distância entre este nó e seus filhos
+    /*_____*/
 
     /**
      * seta todos os filhos para NULL;
@@ -24,6 +30,8 @@ public class No {
         for (i = 0; i < this.listFilhos.size(); i++) {
             this.listFilhos.set(i, null);
         }
+        X = 20;
+        Y = 10;
     }
 
     /**
@@ -165,6 +173,9 @@ public class No {
         return this.listChaves.contains(aChave);
     }
 
+     
+    /**************** SHERMAN ***********************************/
+
     /**
      * Retorna a chave de maior valor dentro de um nó passado como parâmetro
      * @param aNo O nó o qual queremos saber qual sua maior chave
@@ -263,5 +274,48 @@ public class No {
         }
     }
 
+    /**
+     * Método que devolve o nó que contem a Chave sucessora da Chave desejada
+     * @param aChave
+     * @return No
+     */
+    public No getSucessor(int aChave){
+        return this.noAntecessor(this.getFilho(this.getIndexChave(aChave+1)));
+    }
+
+    /**
+     * Método auxilar ao getSucessor
+     * @param node
+     * @return no
+     */
+    public No noSucessor(No node) {
+        if (node.folha()) {
+            return node;
+        } else {
+            return node.noSucessor(node.getFilho(0));
+
+        }
+    }
+
+
+    //Método que recupera a coordenada X do nó
+	public int getX (){
+		return X;
+	}
+
+	//Método que recupera a coordenada Y do nó
+	public int getY (){
+		return Y;
+	}
+
+	//Método que altera a coordenada X do nó
+	public void setX (int s){
+		X = s;
+	}
+
+	//Método que altera a coordenada Y do nó
+	public void setY (int s){
+		Y = s;
+	}
   
 }

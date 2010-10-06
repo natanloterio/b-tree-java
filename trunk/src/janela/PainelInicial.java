@@ -15,11 +15,10 @@ public class PainelInicial extends JPanel
 	private JButton bInsereN;
         private JButton bBusca;
 	private JButton bAlteraOrdem;
-	private JButton bSair;
 	private JTextField tCampo;
 	private Arvore mytree;
 	//private JTextField tf;
-	public PainelInicial(JLabel ordem,JTextField texto,JButton bI,JButton bR,JButton bIN,JButton bB,JButton bAO,JButton bS){
+	public PainelInicial(JLabel ordem,JTextField texto,JButton bI,JButton bR,JButton bIN,JButton bB,JButton bAO){
 		lOrdem = ordem;
                 tCampo = texto;
 		bInsere = bI;
@@ -27,7 +26,6 @@ public class PainelInicial extends JPanel
 		bInsereN = bIN;
                 bBusca = bB;
 		bAlteraOrdem  =bAO;
-		bSair = bS;
 		mytree = new Arvore(5);
                 this.add(lOrdem);
 		this.add(tCampo);
@@ -36,9 +34,6 @@ public class PainelInicial extends JPanel
 		this.add(bInsereN);
                 this.add(bBusca);
 		this.add(bAlteraOrdem);
-		this.add(bSair);
-
-
 	}
 
 
