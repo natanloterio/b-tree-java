@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package arvore_b;
 
 import java.io.BufferedReader;
@@ -13,15 +9,15 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
- * @author Valter
+ * Classe Arquivo que lê os dados do arquivo 'Dados.txt' ou grava valores de chave de forma aleatória
+ * @author Valter Henrique
  */
 public class Arquivo {
 
+    // lista que irá armazenar as chaves que foram lidas do arquivo
     private List<Integer> list = new ArrayList<Integer>();
 
-    public Arquivo() {
-    }
+    public Arquivo() {}
 
     /**
      * Lendo arquivo que contem informações para carregar uma determinada árvore automaticamente
