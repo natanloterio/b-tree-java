@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -36,11 +38,13 @@ public class JanelaInicial extends JFrame
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		int alturaTela = d.height;
 		int comprimentoTela = d.width;
-		this.setSize(comprimentoTela/2, alturaTela/2);
+		this.setSize(comprimentoTela/2, alturaTela*2/3);
+                //this.setSize(1000,600);
 		setLocation((comprimentoTela)/4, (alturaTela)/4);
 		this.setLayout(new BorderLayout());
 		//________________________________
 
+               
 		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -175,7 +179,6 @@ public class JanelaInicial extends JFrame
                     try{
                         k = Integer.parseInt(s);
                         mytree.remove(k);
-                        //metodo remove
                         pBinTree.repaint();
                     }
                     catch (NumberFormatException exception){
@@ -243,14 +246,19 @@ public class JanelaInicial extends JFrame
                  if(e.getSource() == bInsereN){
                     s = tCampo.getText();
                     tCampo.setText("");
+                    Arquivo arq = new Arquivo();
+                    String endereco = "C:\\Users\\Vitor\\Desktop\\Arvore_B\\src\\arvore_b\\Dados.txt";
+                    
                     try{
                         k = Integer.parseInt(s);
+                        arq.gerarDadosAleatório(endereco, mytree.getMaximoChaves() + 1,100, k);
+                        List<Integer> list = new ArrayList<Integer>();
+
+                        list = arq.lerArquivo(endereco);
                         int i;
-                        int valor;
                         //mytree.insere(mytree.getRaiz(), k);
-                        for(i=0;i<k;i++){
-                            valor =(int)(Math.random()*100);
-                            mytree.insere(valor);
+                        for(i=1;i<list.size();i++){
+                            mytree.insere(list.get(i));
                         }
 
 
@@ -294,8 +302,10 @@ public class JanelaInicial extends JFrame
                         mytree = new Arvore(k);
                         mytree.setMaximoChaves(k-1);
                         lTitulo.setText("Ordem = " + Integer.toString(mytree.getMaximoChaves()+1));
-                        pBinTree = new PainelDesenhaArvore(mytree);
+                        
+                        //pBinTree = new PainelDesenhaArvore(mytree);
                         pBinTree.repaint();
+                        
                     }
                     catch (NumberFormatException exception){
 
