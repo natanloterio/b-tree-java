@@ -3,6 +3,7 @@ package arvore_b;
 import java.util.Collections;
 import java.util.Iterator;
 
+
 /**
  * Classe árvore que irá gerenciar as inserções e remoções que uma árvore B terá
  * @author Valter Henrique, Arthur Mazer, Vitor Villela
@@ -140,6 +141,7 @@ public class Arvore {
      * @param i O índice de onde esta o nó a ser dividido
      * @author Valter Henrique
      */
+
     public void divideNo(No aPai, No aFilho, int aIndice) {
 
         // adicionando a chave no nó pai
@@ -195,6 +197,7 @@ public class Arvore {
 
         }
     }
+
 
     /**
      * Realiza a remoção de uma chave contida na árvore
@@ -600,6 +603,26 @@ public class Arvore {
 
     }
 
+    /**
+     * Retorna a chave de maior valor dentro de um nó passado como parâmetro
+     * @param aNo O nó o qual queremos saber qual sua maior chave
+     * @return Retorna a chave de maior valor neste nó
+     * @author Valter Henrique
+     */
+    public int getMaiorChave(No aNo) {
+        int i = 0;
+        Iterator it = aNo.getIteratorChaves();
+
+        while (it.hasNext()) {
+            i++;
+            it.next();
+        }
+
+
+        return aNo.getChave(i - 1);
+    }
+
+
     /**************** SHERMAN ***********************************/
 
     /*alterei a partir daqui, vou colocar os metodos get e set Ordem
@@ -647,4 +670,89 @@ public class Arvore {
         node.removeChavePeloIndice(node.getIndexChave(aChave));
         node.addChave(K);
     }
+
+    public void trocaSucessor(No node, int aChave) {
+        No node_aux = node.getSucessor(aChave);
+        int K;
+
+        K = node_aux.getListChaves().get(0);
+
+        node.removeChavePeloIndice(node.getIndexChave(aChave));
+        node.addChave(K);
+    }
+
+    public No getPai(No node, No raiz) {
+
+        int i;
+
+        for (i = 0; i < raiz.getListChaves().size(); i++) {
+
+            if (raiz.getListFilhos().get(i) == node) {
+                return raiz;
+            } else {
+                return (this.getPai(node, raiz.getListFilhos().get(i)));
+            }
+
+        }
+        return null;
+
+    }
+
+    public No irmaoEsquerdo(No node) {
+        No pai_aux;
+        pai_aux = this.getPai(node, this.getRaiz());
+
+        if (this.getIndexFilho(node) == 0) {
+            return null;
+        } else {
+
+            return pai_aux.getListFilhos().get(this.getIndexFilho(node) - 1);
+        }
+
+    }
+
+    public No irmaoDireito(No node) { // este metodo soh dah certo quando o noh estah completamente cheio
+        No pai_aux;
+        pai_aux = this.getPai(node, this.getRaiz());
+
+        if (this.getIndexFilho(node) == pai_aux.getListFilhos().size()) {
+            return null;
+        } else {
+            // corrigindo o metodo : se this.getIndexFilho(node) + 1 FOR NULO, fazer uma condicao
+            if(pai_aux.getListFilhos().get(this.getIndexFilho(node) + 1)!=null)
+            return pai_aux.getListFilhos().get(this.getIndexFilho(node) + 1);
+            else
+                return null;
+        }
+
+    }
+
+    public int getIndexFilho(No node) {
+        int i;
+        No no_pai = this.getPai(node, raiz);
+
+        for (i = 0; i < no_pai.getListFilhos().size(); i++) {
+
+            if (no_pai.getListFilhos().get(i) == node) {
+                return i;
+            }
+        }
+
+
+        return -1;
+
+    }
+
+    public int getAlturaArvore(No n ,int cont){
+        if(n.folha()){
+            return cont;
+        }else{
+            return getAlturaArvore(n.filhoEsquerdo(n.getChave(0)),cont+1);
+
+        }
+    }
+
+
+
 }
+

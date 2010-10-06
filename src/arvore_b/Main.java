@@ -22,14 +22,17 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-      /*
+    
         JanelaInicial janela = new JanelaInicial();
         janela.setVisible(true);
 
     }
-    */
+    
+/*
 
         int iOpcao = 1;
+        // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
+        String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
 
         // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
         String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore B\\trunk\\src\\arvore_b\\Dados.txt";
@@ -208,5 +211,5 @@ public class Main {
         return iNumMaxFilhos;
     }
 
-    
+    */
 }

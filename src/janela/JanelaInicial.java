@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-/*eu mudei so o tratamento de eventos para o frame ao inves do panel*/
+import javax.swing.JScrollPane;
 
 
 public class JanelaInicial extends JFrame
@@ -20,7 +20,6 @@ public class JanelaInicial extends JFrame
 	private JButton bInsereN;
         private JButton bBusca;
 	private JButton bAlteraOrdem;
-	private JButton bSair;
 	private Arvore mytree;
 	private JTextField tCampo;
 	//private PainelInicial pbinTree; // pq declarar ??
@@ -47,7 +46,7 @@ public class JanelaInicial extends JFrame
 
 		configureMenu();
                 mytree = new Arvore(5);
-                lTitulo = new JLabel("Ordem = " + Integer.toString(mytree.getMaximoChaves())); // "ordem =," mytree.getNumMaximoFilhos
+                lTitulo = new JLabel("Ordem = " + Integer.toString(mytree.getMaximoChaves()+1)); 
                 lTitulo.setForeground(Color.red);
 		tCampo = new JTextField(7);
 		bInsere = new JButton("INSERIR");
@@ -55,7 +54,6 @@ public class JanelaInicial extends JFrame
 		bRemove = new JButton("REMOVER");
 		bInsereN = new JButton("INSERIR N");
 		bAlteraOrdem = new JButton("ALTERAR ORDEM");
-		bSair = new JButton("SAIR");
                 // insercao, busca, remocao, limpeza, inserir n , alterar ordem
 		
 		pBinTree = new PainelDesenhaArvore(mytree);
@@ -67,11 +65,24 @@ public class JanelaInicial extends JFrame
                 bBusca.addActionListener(this);
 		bInsereN.addActionListener(this);
 		bAlteraOrdem.addActionListener(this);
-		bSair.addActionListener(this);
 
-		add(new PainelInicial(lTitulo,tCampo,bInsere,bRemove,bInsereN,bBusca,bAlteraOrdem,bSair),BorderLayout.NORTH);
+		
 		//this.repaint();
-		this.setVisible(true);
+
+                //this.getContentPane().add(pBinTree);
+
+                //Cria uma barra de rolagem
+		JScrollPane jsp = new JScrollPane ();
+                
+		//Adiciona a barra de rolagem na janela
+                this.getContentPane().add(jsp);
+
+                add(new PainelInicial(lTitulo,tCampo,bInsere,bRemove,bInsereN,bBusca,bAlteraOrdem),BorderLayout.NORTH);
+		jsp.setViewportView(pBinTree);
+
+
+                
+		
 
 	}
 
@@ -120,10 +131,10 @@ public class JanelaInicial extends JFrame
 
 	public void actionPerformed(ActionEvent e) {
 		String s;
+                int k;
                 if(e.getSource() == bInsere){
                     s = tCampo.getText();
                     tCampo.setText("");
-                    int k;
                     try{
                         k = Integer.parseInt(s);
 
@@ -159,25 +170,131 @@ public class JanelaInicial extends JFrame
 
 		}
 		if(e.getSource() == bRemove){
+                    s = tCampo.getText();
+                    tCampo.setText("");
+                    try{
+                        k = Integer.parseInt(s);
+                        //metodo remove
+                        pBinTree.repaint();
+                    }
+                    catch (NumberFormatException exception){
 
+				//Se a caixa de texto estiver vazia...
+				if (s.length() == 0){
+					//Exiba mensagem apropriada por meio de uma caixa de diálogo.
+					JOptionPane.showMessageDialog(this,
+							"Você deve digitar algum número inteiro no campo de \n" +
+							"texto e apertar o botão \"Inserir\" para adicioná-lo\n" +
+							"à árvore binária.",
+							"Erro na entrada de dados",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				//Estando preenchida, o valor não será numérico (se fosse, esta
+				//  exceção não seria lançada). Neste caso, também exiba um aviso
+				//  para o usuário, indicando que somente números inteiros são
+				//  válidos para esta aplicação.
+				else{
+					JOptionPane.showMessageDialog(this,
+						"Esta aplicação está restrita a números inteiros.",
+						"Erro na entrada de dados",
+						JOptionPane.ERROR_MESSAGE);
+				}
+			}
 
 		}
+                if(e.getSource() == bBusca){
+                    s = tCampo.getText();
+                    tCampo.setText("");
+                    try{
+                        k = Integer.parseInt(s);
+                        if (mytree.buscaChave(mytree.getRaiz(), k) != null) {
+                            JOptionPane.showMessageDialog(this,"Chave já existe na arvore !!!");
+                        } else {
+                            JOptionPane.showMessageDialog(this,"Não foi encontrada a chave informada");
+                        }
+                        pBinTree.repaint();
+                    }
+                    catch (NumberFormatException exception){
+
+				//Se a caixa de texto estiver vazia...
+				if (s.length() == 0){
+					//Exiba mensagem apropriada por meio de uma caixa de diálogo.
+					JOptionPane.showMessageDialog(this,
+							"Você deve digitar algum número inteiro no campo de \n" +
+							"texto e apertar o botão \"Inserir\" para adicioná-lo\n" +
+							"à árvore binária.",
+							"Erro na entrada de dados",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				//Estando preenchida, o valor não será numérico (se fosse, esta
+				//  exceção não seria lançada). Neste caso, também exiba um aviso
+				//  para o usuário, indicando que somente números inteiros são
+				//  válidos para esta aplicação.
+				else{
+					JOptionPane.showMessageDialog(this,
+						"Esta aplicação está restrita a números inteiros.",
+						"Erro na entrada de dados",
+						JOptionPane.ERROR_MESSAGE);
+				}
+			}
+                }
+
                  if(e.getSource() == bInsereN){
+                    s = tCampo.getText();
+                    tCampo.setText("");
+                    try{
+                        k = Integer.parseInt(s);
+                        int i;
+                        int valor;
+                        //mytree.insere(mytree.getRaiz(), k);
+                        for(i=0;i<k;i++){
+                            valor =(int)(Math.random()*100);
+                            mytree.insere(valor);
+                        }
+
+
+			//pBinTree.updateCanvas();
+			pBinTree.repaint();
+                    }
+                    catch (NumberFormatException exception){
+
+				//Se a caixa de texto estiver vazia...
+				if (s.length() == 0){
+					//Exiba mensagem apropriada por meio de uma caixa de diálogo.
+					JOptionPane.showMessageDialog(this,
+							"Você deve digitar algum número inteiro no campo de \n" +
+							"texto e apertar o botão \"Inserir\" para adicioná-lo\n" +
+							"à árvore binária.",
+							"Erro na entrada de dados",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+				//Estando preenchida, o valor não será numérico (se fosse, esta
+				//  exceção não seria lançada). Neste caso, também exiba um aviso
+				//  para o usuário, indicando que somente números inteiros são
+				//  válidos para esta aplicação.
+				else{
+					JOptionPane.showMessageDialog(this,
+						"Esta aplicação está restrita a números inteiros.",
+						"Erro na entrada de dados",
+						JOptionPane.ERROR_MESSAGE);
+				}
+			}
+
                      // vou chamar o metodo mostrar aqui, por enquanto
                      //mytree.exibir();
                  }
 
-                if(e.getSource() == bAlteraOrdem){
+                if(e.getSource() == bAlteraOrdem){ // PROBLEMA!
                     String sA;
                     sA = tCampo.getText();
                     tCampo.setText("");
-                    int k;
                     try{
                         k = Integer.parseInt(sA);
-                        mytree.setMaximoChaves(k);
-                        lTitulo.setText("Ordem = " + Integer.toString(mytree.getMaximoChaves()));
-                        mytree = new Arvore(mytree.getMaximoChaves());
-                        JOptionPane.showMessageDialog(this, "nova ordem = " + mytree.getMaximoChaves(),"Ordem Alterada",JOptionPane.INFORMATION_MESSAGE);
+                        mytree = new Arvore(k);
+                        mytree.setMaximoChaves(k-1);
+                        lTitulo.setText("Ordem = " + Integer.toString(mytree.getMaximoChaves()+1));
+                        pBinTree = new PainelDesenhaArvore(mytree);
+                        pBinTree.repaint();
                     }
                     catch (NumberFormatException exception){
 
@@ -206,11 +323,6 @@ public class JanelaInicial extends JFrame
                 }
 
 
-
-		if(e.getSource() == bSair){
-                        System.exit(0);
-
-		}
 		if (e.getActionCommand().equals("Fechar")){
 			System.exit(0);
 		}
@@ -228,8 +340,10 @@ public class JanelaInicial extends JFrame
 		}
 		else if (e.getActionCommand().equals("Como usar...")){
 			JOptionPane.showMessageDialog(this,
-					"Esta aplicação corresponde ao metodos de inserção e remoção\n" +
-					"uma árvore-B" ,
+					"Esta aplicação corresponde ao metodos de inserção ,remoção\n" +
+                                        "e busca de uma árvore-B. \n" +
+                                        "Para utilizar o programa, basta digitar um numero inteiro no campo\n" +
+                                        " de texto correspondente e pressionar o botao desejado\n" ,
 					"Como utilizar este programa.",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
