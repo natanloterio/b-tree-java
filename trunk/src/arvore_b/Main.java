@@ -1,52 +1,49 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package arvore_b;
-
-import janela.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.lang.String;
-import java.lang.Throwable;
 import java.util.Random;
 
 /**
- *
+ * Trabalho da disciplina Estrtura de dados 2, oferecido na Universidade Federal de São Carlos - Campus Sorocaba
  * @author Valter Henrique, Arthur Mazer, Vitor Villela
  */
 public class Main {
 
-    /**
+    /** Onde inicializa o nosso sistema
+     *  Para visualizar na interface gráfica deixe como esta o códio
+     *  Para visualizar na interface de saída do sistema comente apenas a parte indicada
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         /*
+        // se quiser ver a interface gráfica
         JanelaInicial janela = new JanelaInicial();
         janela.setVisible(true);
-
         }
-         */
-
+        */
+        
+        // caso queira ver o resultado na saída, na tela de saída do Netbeans
         int iOpcao = 1;
-        // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
-        //String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
 
-        // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
+        // aqui você deve informar o caminho para aonde esta o arquivo 'Dados.txt'
+        // para poder carregar as chaves contidas neste arquivo ou até mesmo gerar chaves aleatóriamente
         String sArquivo = "C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\ArvoreB\\trunk\\src\\arvore_b\\Dados.txt";
 
-        // int iNumMaxFilhos = numMaxFilhos();
-        int iNumMaxFilhos = 3;
+        int iNumMaxFilhos = numMaxFilhos();
 
+        // classe Java para leitura de entrada do teclado
         Scanner scanner = new Scanner(System.in);
+        // objeto da classe árvore b
         Arvore arvore = new Arvore(iNumMaxFilhos);
+        // uma lista que irá conter as chaves carregadas do arquivo
         List<Integer> list = new ArrayList<Integer>();
+        // random para gerar valores aleatório
         Random random = new Random();
 
         while (iOpcao != 0) {
-            System.out.println(" -- Arvore Binária -- ");
+            System.out.println(" -- Árvore B -- ");
             System.out.println(" 1 - Inserir");
             System.out.println(" 2 - Remover");
             System.out.println(" 3 - Exibir");
@@ -67,10 +64,7 @@ public class Main {
                     iOpcao = 8;
                 }
             }
-
-
             System.out.println("-------------------------------");
-
             switch (iOpcao) {
                 case 0:
                     System.out.println("Até logo !");
@@ -196,9 +190,7 @@ public class Main {
                 default:
                     System.out.println("Esta não é uma opção válida!");
             }
-
             System.out.println("\n-------------------------------");
-
         }
     }
 

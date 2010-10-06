@@ -6,23 +6,27 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * Classe nó que irá conter os dados relativos a cada nó da árvore
  * @author Valter Henrique, Arthur Mazer, Vitor Villela
  */
 public class No {
-
+    // lista de chaves que o nó irá possuir
     private List<Integer> listChaves = new ArrayList<Integer>();
+    // lista de filho que o nó irá possuir
     private List<No> listFilhos = new ArrayList<No>();
-    /*Alterei isto*/
-    private int X;                          //coordenada X deste nó na tela da aplicação
-    private int Y;                          //coordenada Y deste nó na tela da aplicação
-    private final int width = 30;           //diâmetro do (desenho) nó
-    private final int levelDistance = 40;   //distância entre este nó e seus filhos
+    //coordenada X deste nó na tela da aplicação
+    private int X;
+    //coordenada Y deste nó na tela da aplicação
+    private int Y;
+    //diâmetro do (desenho) nó
+    private final int width = 30;
+     //distância entre este nó e seus filhos
+    private final int levelDistance = 40;
 
     /**
      * Retorna a lista de chaves de inteiros
-     * @author Valter Henrique
      * @return the listChaves
+     * @author Valter Henrique
      */
     public List<Integer> getListChaves() {
         return listChaves;
@@ -38,7 +42,7 @@ public class No {
     }
 
     /**
-     * Adiciona chave ao nó que chamou o método
+     * Adiciona chave ao nó que chamou o método, adiciona a chave sempre no fim da lista
      * @param aChave
      * @author Valter Henrique
      */
@@ -107,7 +111,6 @@ public class No {
             while (aChave != this.listChaves.get(i)) {
                 i++;
             }
-
             this.listChaves.remove(i);
         }
     }

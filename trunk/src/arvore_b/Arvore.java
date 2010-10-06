@@ -1,8 +1,5 @@
 package arvore_b;
 
-import java.util.Collections;
-import java.util.Iterator;
-
 /**
  * Classe árvore que irá gerenciar as inserções e remoções que uma árvore B terá
  * @author Valter Henrique, Arthur Mazer, Vitor Villela
@@ -269,9 +266,15 @@ public class Arvore {
         }
     }
 
+    /**
+     * Balanceando (redistribuindo) as chaves entre os nós filhos e o seu respectivo nó pai
+     * @param aPai Nó pai que possui os nós filhos aEsq e aDir
+     * @param iIndice Indice onde esta localizado a chave que será removida
+     * @param aEsq Nó filho a esquerda da posição aonde esta a chave a ser removida do nó pai
+     * @param aDir Nó filho a direita da posição aonde esta a chave a ser removida do nó pai
+     * @author Valter Henrique
+     */
     void balanceia_dir_esq(No aPai, int iIndice, No aEsq, No aDir) {
-        System.out.println("BALANCEADO NÓ DA ESQUERDA E DA DIREITA!");
-
         if (!aDir.folha()) {
             for (int i = aDir.numFilhos(); i > 1; i--) {
                 aDir.addFilhosNoIndice(i + 1, aDir.getFilho(i));
@@ -279,7 +282,6 @@ public class Arvore {
         }
 
         if (aDir.numChaves() > iNumMinChaves && aEsq.numChaves() < iNumMinChaves) {
-            System.out.println("CAS0 1");
             aEsq.addChave(aPai.getChave(iIndice));
             aPai.removeChavePeloIndice(iIndice);
 
@@ -291,7 +293,6 @@ public class Arvore {
             aPai.ordenarNo();
         } else {
             if (aEsq.numChaves() > iNumMinChaves && aDir.numChaves() < iNumMinChaves) {
-                System.out.println("CAS0 2");
                 aDir.addChave(aPai.getChave(iIndice));
                 aPai.removeChavePeloIndice(iIndice);
 
@@ -303,8 +304,6 @@ public class Arvore {
                 aPai.ordenarNo();
 
             } else {
-                System.out.println("CAS0 3");
-
                 aDir.addChaveNoIndice(0, aPai.getChave(iIndice));
                 aPai.removeChavePeloIndice(iIndice);
 
@@ -320,56 +319,21 @@ public class Arvore {
 
     }
 
-    No diminuiAltura_v2(No aNo) {
-        int iNumChaves = aNo.numChaves();
-        No noEsq = new No();
-        for (int iFilho = 0; iFilho < iNumChaves; iFilho++) {
-            if (aNo.getFilho(iFilho).numChaves() == iNumMinChaves && aNo.getFilho(iFilho + 1).numChaves() == iNumMinChaves) {
-                noEsq = aNo.getFilho(iFilho);
-                No noDir = aNo.getFilho(iFilho + 1);
-
-                for (int j = 0; j < noDir.numChaves(); j++) {
-                    noEsq.addChave(noDir.getChave(0));
-                    noDir.removeChavePeloIndice(0);
-
-                    noEsq.addFilho(noDir.getFilho(j));
-                    noEsq.addFilho(noDir.getFilho(j + 1));
-
-                    noDir.removeFilho(j);
-                    noDir.removeFilho(j);
-
-                    No noEsqFilho = noEsq.getFilho(j);
-                    No noDirFilho = noEsq.getFilho(j + 1);
-
-                    for (int k = 0; k < noDirFilho.numChaves(); k++) {
-                        noEsqFilho.addChave(noDirFilho.getChave(0));
-                        noDirFilho.removeChavePeloIndice(0);
-                    }
-
-                    noEsq.removeFilho(j + 1);
-
-                }
-                exibirNo(noEsq);
-            }
-        }
-        return noEsq;
-    }
-
+    /**
+     * Diminuindo a altura da árvore
+     * @param aNo Passando o nó que teve a sua chave removida
+     * @author Valter Henrique
+     */
     void diminuiAltura(No aNo) {
-        System.out.println("DENTRO DO DIMINUI ALTURA ");
-
         if (aNo == raiz) {
-            System.out.println("aNo = RAIZ");
             exibirNo(aNo);
 
             if (aNo.numChaves() == 0) {
-                //raiz.addChave(aNo.getChave(0));
                 raiz = aNo.getFilho(0);
             }
         } else {
             No noPai = this.buscaPaiDoNo(aNo, raiz);
             if (aNo.numChaves() < iNumMinChaves) {
-                //No noPai = this.buscaPaiDoNo(aNo, raiz);
 
                 int j = 0;
                 while (noPai.getFilho(j) != aNo) {
@@ -389,6 +353,12 @@ public class Arvore {
 
     }
 
+    /**
+     * Juntando dois nós quando estes já não estiverem mais com as propriedades de uma árvore b
+     * @param aNo Nó pai que possui os filhos noEsq e noDir, sendo assim realizando uma junção entre este nós de forma adequada
+     * @param iIndice
+     * @author Valter Henrique
+     */
     void juncaoNo(No aNo, int iIndice) {
         No noEsq = aNo.getFilho(iIndice);
         No noDir = aNo.getFilho(iIndice + 1);
