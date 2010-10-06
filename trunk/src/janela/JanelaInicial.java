@@ -246,12 +246,22 @@ public class JanelaInicial extends JFrame
                  if(e.getSource() == bInsereN){
                     s = tCampo.getText();
                     tCampo.setText("");
+                    int valor;
+                    int i;
+                    /* METODO BASEADO EM ARQUIVO
                     Arquivo arq = new Arquivo();
                     String endereco = "C:\\Users\\Vitor\\Desktop\\Arvore_B\\src\\arvore_b\\Dados.txt";
-                    
+                    */
                     try{
                         k = Integer.parseInt(s);
-                        arq.gerarDadosAleatório(endereco, mytree.getMaximoChaves() + 1,100, k);
+                        for(i=0;i<k;i++){
+                            valor =(int)(Math.random()*100);
+                            mytree.insere(valor);
+                        }
+                        
+                        /* METODO BASEADO EM ARQUIVO
+
+                         arq.gerarDadosAleatório(endereco, mytree.getMaximoChaves() + 1,100, k);
                         List<Integer> list = new ArrayList<Integer>();
 
                         list = arq.lerArquivo(endereco);
@@ -261,8 +271,7 @@ public class JanelaInicial extends JFrame
                             mytree.insere(list.get(i));
                         }
 
-
-			//pBinTree.updateCanvas();
+                        */
 			pBinTree.repaint();
                     }
                     catch (NumberFormatException exception){
