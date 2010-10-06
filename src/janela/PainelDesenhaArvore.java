@@ -83,7 +83,7 @@ public class PainelDesenhaArvore extends JPanel {
                 //desenhando a linha
 
                 int alturaAtual=0;
-                desenhaFilhos(n,g2);
+                desenhaFilhos(n,alturaAtual,g2);
 		return;
 	}
 
@@ -97,7 +97,7 @@ public class PainelDesenhaArvore extends JPanel {
         }
 
 
-        public void desenhaFilhos(No n, Graphics2D g2){
+        public void desenhaFilhos(No n,int alturaAtual, Graphics2D g2){
            //alturaAtual++;
            int i;
            int anda = 0;
@@ -117,18 +117,29 @@ public class PainelDesenhaArvore extends JPanel {
            List<No> filhos = new ArrayList<No>(); //lista de filhos do no passado por parametro
            //No aux;
             if(!n.folha()){ // mostrar os filhos da Raiz - OK
+                alturaAtual++;
 
                 while ( j < n.numFilhos() ){
                     filhos.add(j,n.getListFilhos().get(j)); // setando a posicao da lista, com a lista de filhos
                     filhos.get(j).setY(n.getY() + constante);
 
-                    if(j == 0){ // seta a primeira coordenada com a condicao valida para altura = 1
-                        filhos.get(j).setX(n.getX()- tamanhoRetangulo - espacoEntreRetangulos); // essa condicao eh valida para h = 1
-                    }
-                    if(j != 0 ){
-                        filhos.get(j).setX(armazenaCoordenadaX + tamanhoRetangulo + espacoEntreRetangulos);
-                    }
 
+                    if(alturaAtual == alturaArvore && alturaArvore < 2){
+                        if(j == 0){ // seta a primeira coordenada com a condicao valida para altura = 1
+                            filhos.get(j).setX(n.getX()- tamanhoRetangulo - espacoEntreRetangulos); // essa condicao eh valida para h = 1
+                        }
+                        if(j != 0 ){
+                            filhos.get(j).setX(armazenaCoordenadaX + tamanhoRetangulo + espacoEntreRetangulos);
+                        }
+                    }else{
+                        if(j == 0){ // seta a primeira coordenada com a condicao valida para altura = 1
+                            filhos.get(j).setX(20); // essa condicao eh valida para h = 1
+                        }
+                        if(j != 0 ){
+                            filhos.get(j).setX(armazenaCoordenadaX + tamanhoRetangulo + espacoEntreRetangulos);
+                        }
+
+                    }
 
                     g2.setColor(Color.LIGHT_GRAY);
                     g2.fill( new Rectangle2D.Double(filhos.get(j).getX() ,filhos.get(j).getY(),tamanhoRetangulo,altRet));
@@ -149,9 +160,9 @@ public class PainelDesenhaArvore extends JPanel {
 
                    armazenaCoordenadaX = filhos.get(j).getX(); // essa variavel armazena o valor da coordenada X
                    // isto eh util, para depois setar o proximo x do novo aux
-                   
-                    j = j+ 1;
 
+                   desenhaFilhos(filhos.get(j),alturaAtual,g2);
+                   j = j+ 1;
                 }
                 
            }
