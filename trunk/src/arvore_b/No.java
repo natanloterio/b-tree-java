@@ -20,19 +20,7 @@ public class No {
     private final int levelDistance = 40;   //distância entre este nó e seus filhos
     /*_____*/
 
-    /**
-     * seta todos os filhos para NULL;
-     * Valter : isso é mesmo necessário? Se não há filhos, o tamanho da listFilhos será 0.
-     * @author : Arthur Mazer
-     */
-    public No() {
-        int i;
-        for (i = 0; i < this.listFilhos.size(); i++) {
-            this.listFilhos.set(i, null);
-        }
-        X = 20;
-        Y = 10;
-    }
+
 
     /**
      * Retorna a lista de chaves de inteiros

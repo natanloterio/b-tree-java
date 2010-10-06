@@ -205,7 +205,7 @@ public class Arvore {
      * @return true se achou e removeu a chave, false se não achou a chave na árvore
      * @author Arthur Mazer, Valter Henrique
      */
-    boolean remove(int aChave) {
+    public boolean remove(int aChave) {
         // se ao procurar a chave na árvore e não encontrar
         if (this.buscaChave(raiz, aChave) == null) {
             return false;

@@ -56,9 +56,9 @@ public class PainelDesenhaArvore extends JPanel {
                 //arvore.getRaiz().setX((int)tamanhoOcupado/2); // calculo o espaco ocupado pelos filhos no eixo x, para centralizar o noh pai
 
                 // desenhando a raiz!!
-                g2.setColor(Color.GRAY);
+                g2.setColor(Color.BLACK);
                 g2.fill( new Rectangle2D.Double(n.getX() ,n.getY(),tamanhoRetangulo,altRet)); // a altura do retangulo serah sempre 20
-		g2.setPaint(Color.BLACK);
+		g2.setPaint(Color.WHITE);
                 for(i=0;i<n.numChaves();i++){
                         g2.drawString(Integer.toString(n.getChave(i)), n.getX()  + anda, n.getY() + 12);
                         anda += 20;
@@ -95,9 +95,9 @@ public class PainelDesenhaArvore extends JPanel {
             if(!n.folha()){ // mostrar os filhos da Raiz - OK
                 while (j<n.numFilhos()){
                     aux = n.getListFilhos().get(j);
-                    g2.setColor(Color.GRAY);
+                    g2.setColor(Color.BLACK);
                     g2.fill( new Rectangle2D.Double(n.getX() ,n.getY(),tamanhoRetangulo,altRet));
-                    g2.setPaint(Color.BLACK);
+                    g2.setPaint(Color.WHITE);
                     for(i=0;i<aux.numChaves();i++){
                         g2.drawString(Integer.toString(aux.getChave(i)), n.getX() + anda, n.getY() + 12);
                         anda += 16;
