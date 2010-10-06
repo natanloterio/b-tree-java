@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package arvore_b;
+
 import janela.*;
 
 import java.util.ArrayList;
@@ -22,22 +23,19 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-    
+        /*
         JanelaInicial janela = new JanelaInicial();
         janela.setVisible(true);
 
-    }
-    
-/*
+        }
+         */
 
         int iOpcao = 1;
         // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
-        String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
+        //String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore_B\\src\\arvore_b\\Dados.txt";
 
         // Valter : Por favor não removam essa linha, apenas comentem, é mais prático,rsrs.
-        String sArquivo = "C:\\Users\\Valter\\Documents\\NetBeansProjects\\Arvore B\\trunk\\src\\arvore_b\\Dados.txt";
-        //String sArquivo = "C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\Arvore B\\trunk\\src\\arvore_b\\Dados.txt";
-
+        String sArquivo = "C:\\Documents and Settings\\317306\\Meus documentos\\NetBeansProjects\\ArvoreB\\trunk\\src\\arvore_b\\Dados.txt";
 
         // int iNumMaxFilhos = numMaxFilhos();
         int iNumMaxFilhos = 3;
@@ -97,27 +95,34 @@ public class Main {
                     System.out.println("(2) Remover valor aleatóriamente");
                     System.out.print("\n>> ");
                     iOpcaoRemover = scanner.nextInt();
-                    
-                    if (iOpcaoRemover == 1) {
-                        System.out.println("Remover >> ");
-                        iRemover = scanner.nextInt();
-                        if (arvore.remove(iRemover)) {
-                            System.out.println("Chave removida com sucesso !");
-                        } else {
-                            System.out.println("Chave não existe na árvore");
-                        }
-                    }else{
-                        int i = random.nextInt(list.size());
-                        iRemover = list.get(i);
-                        list.remove(i);
-                        
-                        System.out.println("Remover (aleatóriamente) >> " + iRemover);
-                        //list.remove(iRemover);
-                        if (arvore.remove(iRemover)) {
-                            System.out.println("Chave removida com sucesso !");
-                        } else {
-                            System.out.println("Chave não existe na árvore");
-                        }
+
+                    switch (iOpcaoRemover) {
+                        case 1:
+                            System.out.println("Remover >> ");
+                            iRemover = scanner.nextInt();
+                            if (arvore.remove(iRemover)) {
+                                System.out.println("Chave removida com sucesso !");
+                            } else {
+                                System.out.println("Chave não existe na árvore");
+                            }
+                            break;
+                        case 2:
+                            int i = random.nextInt(list.size());
+                            while (!list.contains(i)) {
+                                i = random.nextInt(list.size());
+                            }
+
+                            System.out.println("Remover (aleatóriamente) >> " + list.get(i));
+                            if (arvore.remove(list.get(i))) {
+                                System.out.println("Chave removida com sucesso !");
+                            } else {
+                                System.out.println("Chave não existe na árvore");
+                            }
+                            list.remove(i);
+                            break;
+
+                        default:
+                            System.out.println("Informe uma opção válida");
                     }
 
                     break;
@@ -210,6 +215,4 @@ public class Main {
         }
         return iNumMaxFilhos;
     }
-
-    */
 }
