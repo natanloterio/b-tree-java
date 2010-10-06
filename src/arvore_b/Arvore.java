@@ -3,7 +3,6 @@ package arvore_b;
 import java.util.Collections;
 import java.util.Iterator;
 
-
 /**
  * Classe árvore que irá gerenciar as inserções e remoções que uma árvore B terá
  * @author Valter Henrique, Arthur Mazer, Vitor Villela
@@ -141,7 +140,6 @@ public class Arvore {
      * @param i O índice de onde esta o nó a ser dividido
      * @author Valter Henrique
      */
-
     public void divideNo(No aPai, No aFilho, int aIndice) {
 
         // adicionando a chave no nó pai
@@ -198,7 +196,6 @@ public class Arvore {
         }
     }
 
-
     /**
      * Realiza a remoção de uma chave contida na árvore
      * @param aChave A chave a ser removida
@@ -227,25 +224,17 @@ public class Arvore {
 
                     No noAntecessor = buscaAntecessor(aChave);
 
-                    if (noAntecessor.numChaves() > 1) {
+                    int iMaiorChaveAntecessor = noAntecessor.maiorChave();
 
-                        int iMaiorChaveAntecessor = noAntecessor.maiorChave();
+                    System.out.println("O ANTECESSOR EH >>  " + iMaiorChaveAntecessor);
 
-                        System.out.println("O ANTECESSOR EH >>  " + iMaiorChaveAntecessor);
+                    noAntecessor.removeChavePeloValor(iMaiorChaveAntecessor);
 
-                        noAntecessor.removeChavePeloValor(iMaiorChaveAntecessor);
+                    noRemove.removeChavePeloValor(aChave);
+                    noRemove.addChave(iMaiorChaveAntecessor);
+                    noRemove.ordenarNo();
 
-                        noRemove.removeChavePeloValor(aChave);
-                        noRemove.addChave(iMaiorChaveAntecessor);
-                        noRemove.ordenarNo();
-
-                        balanceia_folha(noAntecessor);
-                    } else {
-                        if (noRemove == raiz) {
-                            raiz = diminuiAltura_v2(noRemove);
-                        }
-
-                    }
+                    balanceia_folha(noAntecessor);
                 }
             }
         }
@@ -269,7 +258,7 @@ public class Arvore {
             }
 
             if (j == 0 || noPai.getFilho(j - 1).numChaves() == iNumMinChaves) {
-                if (j == noPai.numChaves() || noPai.getFilho(j + 1).numChaves() == iNumMinChaves) {
+                if ((j == noPai.numChaves() + 1) || noPai.getFilho(j + 1).numChaves() == iNumMinChaves) {
                     diminuiAltura(aNo);
                 } else {
                     balanceia_dir_esq(noPai, j, aNo, noPai.getFilho(j + 1));
@@ -290,6 +279,7 @@ public class Arvore {
         }
 
         if (aDir.numChaves() > iNumMinChaves && aEsq.numChaves() < iNumMinChaves) {
+            System.out.println("CAS0 1");
             aEsq.addChave(aPai.getChave(iIndice));
             aPai.removeChavePeloIndice(iIndice);
 
@@ -301,11 +291,9 @@ public class Arvore {
             aPai.ordenarNo();
         } else {
             if (aEsq.numChaves() > iNumMinChaves && aDir.numChaves() < iNumMinChaves) {
+                System.out.println("CAS0 2");
                 aDir.addChave(aPai.getChave(iIndice));
                 aPai.removeChavePeloIndice(iIndice);
-
-                aDir.addChave(aEsq.maiorChave());
-                aEsq.removeChavePeloValor(aEsq.maiorChave());
 
                 aPai.addChave(aEsq.maiorChave());
                 aEsq.removeChavePeloValor(aEsq.maiorChave());
@@ -315,6 +303,7 @@ public class Arvore {
                 aPai.ordenarNo();
 
             } else {
+                System.out.println("CAS0 3");
 
                 aDir.addChaveNoIndice(0, aPai.getChave(iIndice));
                 aPai.removeChavePeloIndice(iIndice);
@@ -323,8 +312,6 @@ public class Arvore {
                 aEsq.removeChavePeloValor(aEsq.maiorChave());
             }
         }
-
-
 
         if (!aEsq.folha()) {
             aDir.addFilhosNoIndice(0, aEsq.getFilho(aEsq.numFilhos() - 1));
@@ -372,7 +359,7 @@ public class Arvore {
         System.out.println("DENTRO DO DIMINUI ALTURA ");
 
         if (aNo == raiz) {
-            System.out.println("ANO = RAIZ");
+            System.out.println("aNo = RAIZ");
             exibirNo(aNo);
 
             if (aNo.numChaves() == 0) {
@@ -395,8 +382,6 @@ public class Arvore {
                     juncaoNo(noPai, j);
                 }
 
-                //System.out.println("MOSTRANDO O PAI >> ");
-                //exibirNo(noPai);
                 diminuiAltura(noPai);
 
             }
@@ -529,7 +514,6 @@ public class Arvore {
         while (this.buscaChave(raiz, iChave) == null) {
             iChave--;
         }
-
         return this.buscaChave(raiz, iChave);
     }
 
@@ -602,26 +586,6 @@ public class Arvore {
         return i;
 
     }
-
-    /**
-     * Retorna a chave de maior valor dentro de um nó passado como parâmetro
-     * @param aNo O nó o qual queremos saber qual sua maior chave
-     * @return Retorna a chave de maior valor neste nó
-     * @author Valter Henrique
-     */
-    public int getMaiorChave(No aNo) {
-        int i = 0;
-        Iterator it = aNo.getIteratorChaves();
-
-        while (it.hasNext()) {
-            i++;
-            it.next();
-        }
-
-
-        return aNo.getChave(i - 1);
-    }
-
 
     /**************** SHERMAN ***********************************/
 
@@ -719,10 +683,11 @@ public class Arvore {
             return null;
         } else {
             // corrigindo o metodo : se this.getIndexFilho(node) + 1 FOR NULO, fazer uma condicao
-            if(pai_aux.getListFilhos().get(this.getIndexFilho(node) + 1)!=null)
-            return pai_aux.getListFilhos().get(this.getIndexFilho(node) + 1);
-            else
+            if (pai_aux.getListFilhos().get(this.getIndexFilho(node) + 1) != null) {
+                return pai_aux.getListFilhos().get(this.getIndexFilho(node) + 1);
+            } else {
                 return null;
+            }
         }
 
     }
@@ -743,16 +708,13 @@ public class Arvore {
 
     }
 
-    public int getAlturaArvore(No n ,int cont){
-        if(n.folha()){
+    public int getAlturaArvore(No n, int cont) {
+        if (n.folha()) {
             return cont;
-        }else{
-            return getAlturaArvore(n.filhoEsquerdo(n.getChave(0)),cont+1);
+        } else {
+            return getAlturaArvore(n.filhoEsquerdo(n.getChave(0)), cont + 1);
 
         }
     }
-
-
-
 }
 

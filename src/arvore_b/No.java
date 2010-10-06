@@ -18,9 +18,6 @@ public class No {
     private int Y;                          //coordenada Y deste nó na tela da aplicação
     private final int width = 30;           //diâmetro do (desenho) nó
     private final int levelDistance = 40;   //distância entre este nó e seus filhos
-    /*_____*/
-
-
 
     /**
      * Retorna a lista de chaves de inteiros
@@ -104,11 +101,12 @@ public class No {
      * @param aChave A chave a ser removida
      * @author Valter Henrique
      */
-    public void removeChavePeloValor(int aChave){
-        if (this.listChaves.contains(aChave)){
+    public void removeChavePeloValor(int aChave) {
+        if (this.listChaves.contains(aChave)) {
             int i = 0;
-            while(aChave != this.listChaves.get(i))
+            while (aChave != this.listChaves.get(i)) {
                 i++;
+            }
 
             this.listChaves.remove(i);
         }
@@ -157,16 +155,12 @@ public class No {
      * @return Retorna true se contiver a chave procurada, false se não tiver a chave
      * @author Valter Henrique
      */
-     public boolean contemChave(int aChave){
+    public boolean contemChave(int aChave) {
         return this.listChaves.contains(aChave);
     }
 
-     
-    /**************** SHERMAN ***********************************/
-
     /**
      * Retorna a chave de maior valor dentro de um nó passado como parâmetro
-     * @param aNo O nó o qual queremos saber qual sua maior chave
      * @return Retorna a chave de maior valor neste nó
      * @author Valter Henrique
      */
@@ -174,11 +168,16 @@ public class No {
         return this.listChaves.get(this.listChaves.size() - 1);
     }
 
-    public int menorChave(){
+    /**
+     * Retorna a menor chave que o nó possui
+     * @return A chave de menor valor
+     * @author Valter Henrique
+     */
+    public int menorChave() {
         return this.listChaves.get(0);
     }
 
-     /**
+    /**
      * Ordena as chaves ativas dentro de um nó
      * @param aNo O nó a ser ordenado
      * @author Valter Henrique
@@ -187,9 +186,7 @@ public class No {
         Collections.sort(this.listChaves);
     }
 
-     
     /**************** SHERMAN ***********************************/
-
     /** Retorna o filho desejado
      * @param index
      * @return nó no indíce informado
@@ -244,7 +241,7 @@ public class No {
      * @param aChave
      * @return No
      */
-    public No getAntecessor(int aChave){
+    public No getAntecessor(int aChave) {
         return this.noAntecessor(this.getFilho(this.getIndexChave(aChave)));
     }
 
@@ -258,7 +255,7 @@ public class No {
             return node;
         } else {
             return node.noAntecessor(node.getFilho(node.getListFilhos().size() - 1));
-        
+
         }
     }
 
@@ -267,8 +264,8 @@ public class No {
      * @param aChave
      * @return No
      */
-    public No getSucessor(int aChave){
-        return this.noAntecessor(this.getFilho(this.getIndexChave(aChave+1)));
+    public No getSucessor(int aChave) {
+        return this.noAntecessor(this.getFilho(this.getIndexChave(aChave + 1)));
     }
 
     /**
@@ -285,25 +282,23 @@ public class No {
         }
     }
 
-
     //Método que recupera a coordenada X do nó
-	public int getX (){
-		return X;
-	}
+    public int getX() {
+        return X;
+    }
 
-	//Método que recupera a coordenada Y do nó
-	public int getY (){
-		return Y;
-	}
+    //Método que recupera a coordenada Y do nó
+    public int getY() {
+        return Y;
+    }
 
-	//Método que altera a coordenada X do nó
-	public void setX (int s){
-		X = s;
-	}
+    //Método que altera a coordenada X do nó
+    public void setX(int s) {
+        X = s;
+    }
 
-	//Método que altera a coordenada Y do nó
-	public void setY (int s){
-		Y = s;
-	}
-  
+    //Método que altera a coordenada Y do nó
+    public void setY(int s) {
+        Y = s;
+    }
 }
