@@ -6,13 +6,15 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.*;
 
 import javax.swing.JScrollPane;
 
+/**
+ *
+ * @author Vitor Villela
+ */
 
 public class JanelaInicial extends JFrame
 	implements ActionListener{
@@ -22,30 +24,25 @@ public class JanelaInicial extends JFrame
 	private JButton bInsereN;
         private JButton bBusca;
 	private JButton bAlteraOrdem;
+        private JButton bLimpeza;
 	private Arvore mytree;
 	private JTextField tCampo;
-	//private PainelInicial pbinTree; // pq declarar ??
 	private PainelDesenhaArvore pBinTree;
 
-	//private JTextField jcampo;
 	public JanelaInicial(){
 		super();
 		this.setTitle("ARVORE-B");
 
-		// metodo do professor para abrir a janela num tamanho, de acordo
-		// com as coordeanadads do monitor, e centralizar a janela
-		//______________________________
+		
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		int alturaTela = d.height;
 		int comprimentoTela = d.width;
-		this.setSize(comprimentoTela/2, alturaTela*2/3);
+		this.setSize(comprimentoTela*2/3, alturaTela/2);
                 //this.setSize(1000,600);
 		setLocation((comprimentoTela)/4, (alturaTela)/4);
 		this.setLayout(new BorderLayout());
-		//________________________________
-
                
-		this.setResizable(false);
+		this.setResizable(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		configureMenu();
@@ -57,11 +54,19 @@ public class JanelaInicial extends JFrame
                 bBusca = new JButton("BUSCAR");
 		bRemove = new JButton("REMOVER");
 		bInsereN = new JButton("INSERIR N");
+                bLimpeza = new JButton("LIMPAR TUDO");
 		bAlteraOrdem = new JButton("ALTERAR ORDEM");
                 // insercao, busca, remocao, limpeza, inserir n , alterar ordem
 		
 		pBinTree = new PainelDesenhaArvore(mytree);
 
+                //adicionando tooltips nos botoes
+                bInsere.setToolTipText("Inserir um valor na árvore");
+                bRemove.setToolTipText("Remover um valor na árvore");
+                bBusca.setToolTipText("Buscar um valor na árvore");
+                bInsereN.setToolTipText("Inserir vários valores na árvore");
+                bAlteraOrdem.setToolTipText("Alterar a ordem da árvore");
+                bLimpeza.setToolTipText("Apagar a árvore inteira");
 
 
 		bInsere.addActionListener(this);
@@ -69,24 +74,16 @@ public class JanelaInicial extends JFrame
                 bBusca.addActionListener(this);
 		bInsereN.addActionListener(this);
 		bAlteraOrdem.addActionListener(this);
+                bLimpeza.addActionListener(this);
 
 		
-		//this.repaint();
-
-                //this.getContentPane().add(pBinTree);
-
-                //Cria uma barra de rolagem
 		JScrollPane jsp = new JScrollPane ();
                 
-		//Adiciona a barra de rolagem na janela
+		
                 this.getContentPane().add(jsp);
 
-                add(new PainelInicial(lTitulo,tCampo,bInsere,bRemove,bInsereN,bBusca,bAlteraOrdem),BorderLayout.NORTH);
+                add(new PainelInicial(lTitulo,tCampo,bInsere,bRemove,bInsereN,bBusca,bAlteraOrdem,bLimpeza),BorderLayout.NORTH);
 		jsp.setViewportView(pBinTree);
-
-
-                
-		
 
 	}
 
@@ -302,18 +299,22 @@ public class JanelaInicial extends JFrame
                      //mytree.exibir();
                  }
 
-                if(e.getSource() == bAlteraOrdem){ // PROBLEMA!
+                if(e.getSource() == bLimpeza){
+                    mytree.limpaArvore();
+                    pBinTree.repaint();
+                }
+                if(e.getSource() == bAlteraOrdem){ 
                     String sA;
                     sA = tCampo.getText();
                     tCampo.setText("");
                     try{
                         k = Integer.parseInt(sA);
-                        mytree = new Arvore(k);
+                        mytree.limpaArvore();
                         mytree.setMaximoChaves(k-1);
+
                         lTitulo.setText("Ordem = " + Integer.toString(mytree.getMaximoChaves()+1));
-                        
-                        //pBinTree = new PainelDesenhaArvore(mytree);
                         pBinTree.repaint();
+                        
                         
                     }
                     catch (NumberFormatException exception){
@@ -363,7 +364,9 @@ public class JanelaInicial extends JFrame
 					"Esta aplicação corresponde ao metodos de inserção ,remoção\n" +
                                         "e busca de uma árvore-B. \n" +
                                         "Para utilizar o programa, basta digitar um numero inteiro no campo\n" +
-                                        " de texto correspondente e pressionar o botao desejado\n" ,
+                                        "de texto correspondente e pressionar o botao desejado\n"+
+                                        "Caso queira apagar a árvore inteira, basta clicar no botão " +
+                                        "limpar tudo",
 					"Como utilizar este programa.",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
